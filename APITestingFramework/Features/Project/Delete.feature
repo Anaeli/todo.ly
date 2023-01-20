@@ -1,6 +1,5 @@
 Feature: Delete a project by ID
 
-@delete
 Scenario: User deletes a project    
     Given the user has a valid project ID
     When the user sends a DELETE request to the "https://todo.ly/api/projects/{id}.json" endpoint

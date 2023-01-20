@@ -1,4 +1,3 @@
-@update @todo.ly @https://todo.ly
 Feature: Update a Project by ID
 
 Scenario: User updates a project's information 
