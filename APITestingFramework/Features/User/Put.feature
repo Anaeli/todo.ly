@@ -16,3 +16,8 @@ Feature: User Update in https://todo.ly/ website. API endpoint https://todo.ly/a
         When the user submits a PUT request to the API endpoint
         Then the API should return a 401 status code and an error message indicating that the user is not authorized to access the resource.
 
+    Scenario: Create a new item in a project.
+        Given The user is authenticated
+        When The user makes a PUT request to the following URL
+        And Types the following text { "Checked": "true" }
+        Then The API will update the item in the selected project and mark it as done.

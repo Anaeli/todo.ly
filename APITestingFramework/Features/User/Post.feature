@@ -21,3 +21,9 @@ Feature: User Creation in https://todo.ly/ website. API endpoint https://todo.ly
         Given the user is not authenticated
         When the user submits a POST request to the API endpoint with a JSON or XML payload that has an email previously used to create an account
         Then the API should return a 400 status code and an error message indicating that an account with the email provided already exists
+
+    Scenario: Create a new item in a project
+        Given The user is authenticated
+        When The user makes a POST request to the following URL
+        And Types the following text { "Content": "This is a new item", "ProjectId": 4053023 }
+        Then The API will post a new item in the selected project

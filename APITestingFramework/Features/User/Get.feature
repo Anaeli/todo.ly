@@ -17,3 +17,15 @@ Feature: Retrieve an existing user in https://todo.ly/ website. API endpoint htt
         Then the API should return a 401 status code and an error message indicating that the user is not authorized to access the resource.
 
 
+    Scenario: Retrieve all items of a project.
+        Given The user is authenticated
+        When The user makes a GET request to the following URL
+        Then The API will return all the items of the specified project
+    
+    Scenario: Retrieve all done items of a project.
+        Given The user is authenticated
+        When The user makes a GET request to the following URL
+        Then The API will return all the done items of the specified project.
+
+    
+    
