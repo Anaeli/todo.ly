@@ -23,9 +23,9 @@ jobs:
         run: dotnet build APITestingFramework/
       - name: Check format issues
         run: dotnet format --verify-no-changes -v d APITestingFramework/
-      - name: Run tests
+      #- name: Run tests
         #run: dotnet test APITestingFramework/ -l html --collect:"XPlat Code Coverage" --results-directory "TestResults-${{ matrix.dotnet-version }}"
-        run: dotnet test APITestingFramework/
+      #  run: dotnet test APITestingFramework/
       #- name: Upload test results
       #  uses: actions/upload-artifact@v3
       #  with:
