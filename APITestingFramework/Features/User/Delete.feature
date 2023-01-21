@@ -10,6 +10,3 @@ Feature: User Deletion in https://todo.ly/ website. API endpoint https://todo.ly
         Given the user is not authenticated
         When the user submits a DELETE request to the API endpoint
         Then the API should return a 401 status code and an error message indicating that the user is not authorized to access the resource.
-
-
-
