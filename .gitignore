@@ -6,6 +6,9 @@
 # Code Coverage report
 .coveragereport/
 
+# Ignore *.feature.cs files
+*.feature.cs
+
 # User-specific files
 *.rsuser
 *.suo
