@@ -29,7 +29,7 @@ namespace Features.User.Post
             var body = new UserPayloadModel(
                 "molinazjd@gmail.com",
                 "password",
-                "joaco",
+                "fullname",
                 null,
                 null,
                 null,
@@ -65,9 +65,9 @@ namespace Features.User.Post
         {
             var url = "user.json";
             var body = new UserPayloadModel(
-                "",
-                "password",
-                "fullname",
+                null,
+                null,
+                null,
                 null,
                 null,
                 null,
@@ -104,7 +104,23 @@ namespace Features.User.Post
         )]
         public void WhentheusersubmitsaPOSTrequesttotheAPIendpointwithaJSONorXMLpayloadthathasinvaliddata()
         {
-            string skere = "";
+            var url = "user.json";
+            var body = new UserPayloadModel(
+                "",
+                "password",
+                "fullname",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+            );
+            _scenarioContext["Response"] = client.Post<UserPayloadModel>(url, body);
         }
 
         [Then(
@@ -114,7 +130,14 @@ namespace Features.User.Post
             int args1
         )
         {
-            string skere = "";
+            var response = (RestResponse)_scenarioContext["Response"];
+
+            Assert.True(response.IsSuccessful);
+            Assert.Equal("OK", response.StatusCode.ToString());
+            var res = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
+            Assert.IsType<ErrorResponseModel>(res);
+            Assert.Equal("Invalid Email Address", res!.ErrorMessage);
+            Assert.Equal(307, res!.ErrorCode);
         }
 
         [When(
@@ -122,7 +145,23 @@ namespace Features.User.Post
         )]
         public void WhentheusersubmitsaPOSTrequesttotheAPIendpointwithaJSONorXMLpayloadthathasanemailpreviouslyusedtocreateanaccount()
         {
-            string skere = "";
+            var url = "user.json";
+            var body = new UserPayloadModel(
+                "test@gmail.com",
+                "password",
+                "fullname",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+            );
+            _scenarioContext["Response"] = client.Post<UserPayloadModel>(url, body);
         }
 
         [Then(
@@ -132,7 +171,14 @@ namespace Features.User.Post
             int args1
         )
         {
-            string skere = "";
+            var response = (RestResponse)_scenarioContext["Response"];
+
+            Assert.True(response.IsSuccessful);
+            Assert.Equal("OK", response.StatusCode.ToString());
+            var res = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
+            Assert.IsType<ErrorResponseModel>(res);
+            Assert.Equal("Account with this email address already exists", res!.ErrorMessage);
+            Assert.Equal(201, res!.ErrorCode);
         }
     }
 }

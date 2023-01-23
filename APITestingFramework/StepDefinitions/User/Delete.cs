@@ -39,7 +39,7 @@ namespace Features.User.Delete
             var response = (RestResponse)_scenarioContext["Response"];
 
             Assert.True(response.IsSuccessful);
-            Assert.Equal(response.StatusCode.ToString(), "OK");
+            Assert.Equal("OK", response.StatusCode.ToString());
             var user = JsonSerializer.Deserialize<UserPayloadModel>(response.Content!);
             Assert.IsType<UserPayloadModel>(user);
         }

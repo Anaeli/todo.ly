@@ -6,6 +6,10 @@
 # Code Coverage report
 .coveragereport/
 
+#Livingdoc reports
+ReportOutputs/
+LivingDoc.html
+
 # Ignore *.feature.cs files
 *.feature.cs
 

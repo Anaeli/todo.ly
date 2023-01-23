@@ -3,9 +3,9 @@ namespace Models;
 public record UserPayloadModel
 {
     public long? Id { get; set; } = null;
-    public string Email { get; set; }
-    public string Password { get; set; }
-    public string FullName { get; set; }
+    public string? Email { get; set; }
+    public string? Password { get; set; }
+    public string? FullName { get; set; }
     public double? TimeZone { get; set; } = null;
     public bool? IsProUser { get; set; } = null;
     public long? DefaultProjectId { get; set; } = null;
@@ -17,9 +17,9 @@ public record UserPayloadModel
     public string? TimeZoneId { get; set; } = null;
 
     public UserPayloadModel(
-        string Email,
-        string Password,
-        string FullName,
+        string? Email,
+        string? Password,
+        string? FullName,
         long? Id,
         double? TimeZone,
         bool? IsProUser,
