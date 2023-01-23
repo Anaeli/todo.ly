@@ -1,10 +1,10 @@
-using System;
-using TechTalk.SpecFlow;
+﻿using System;
+using System.Text.Json;
 using Core;
-using RestSharp;
 using Features.GeneralSteps;
 using Models;
-using System.Text.Json;
+using RestSharp;
+using TechTalk.SpecFlow;
 
 namespace Features.User.Delete
 {
@@ -13,7 +13,7 @@ namespace Features.User.Delete
     public class DeleteStepDefinitions : CommonSteps
     {
         private readonly ScenarioContext _scenarioContext;
-        private RestHelper client = new RestHelper("https://todo.ly/api");
+        private readonly RestHelper client = new RestHelper("https://todo.ly/api");
 
         public DeleteStepDefinitions(ScenarioContext scenarioContext) : base(scenarioContext)
         {

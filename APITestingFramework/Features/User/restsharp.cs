@@ -1,6 +1,6 @@
+﻿using System.Collections.Generic;
 using RestSharp;
 using RestSharp.Authenticators;
-using System.Collections.Generic;
 
 public record User(int Id, string Email, string FullName);
 public record Error(string ErrorMessage, int ErrorCode);
@@ -26,7 +26,4 @@ public class UserTest
         // System.Console.WriteLine(response1);
     }
 }
- 
-
-
 

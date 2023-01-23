@@ -1,4 +1,4 @@
-namespace Models;
+﻿namespace Models;
 
 public record UserPayloadModel
 {
@@ -17,33 +17,33 @@ public record UserPayloadModel
     public string? TimeZoneId { get; set; } = null;
 
     public UserPayloadModel(
-        string? Email,
-        string? Password,
-        string? FullName,
-        long? Id,
-        double? TimeZone,
-        bool? IsProUser,
-        long? DefaultProjectId,
-        bool? AddItemMoreExpanded,
-        bool? EditDueDateMoreExpanded,
-        int? ListSortType,
-        int? FirstDayOfWeek,
-        int? NewTaskDueDate,
-        string? TimeZoneId
+        string? email,
+        string? password,
+        string? fullName,
+        long? id,
+        double? timeZone,
+        bool? isProUser,
+        long? defaultProjectId,
+        bool? addItemMoreExpanded,
+        bool? editDueDateMoreExpanded,
+        int? listSortType,
+        int? firstDayOfWeek,
+        int? newTaskDueDate,
+        string? timeZoneId
     )
     {
-        this.Id = Id;
-        this.Email = Email;
-        this.Password = Password;
-        this.FullName = FullName;
-        this.TimeZone = TimeZone;
-        this.IsProUser = IsProUser;
-        this.DefaultProjectId = DefaultProjectId;
-        this.AddItemMoreExpanded = AddItemMoreExpanded;
-        this.EditDueDateMoreExpanded = EditDueDateMoreExpanded;
-        this.ListSortType = ListSortType;
-        this.FirstDayOfWeek = FirstDayOfWeek;
-        this.NewTaskDueDate = NewTaskDueDate;
-        this.TimeZoneId = TimeZoneId;
+        Id = id;
+        Email = email;
+        Password = password;
+        FullName = fullName;
+        TimeZone = timeZone;
+        IsProUser = isProUser;
+        DefaultProjectId = defaultProjectId;
+        AddItemMoreExpanded = addItemMoreExpanded;
+        EditDueDateMoreExpanded = editDueDateMoreExpanded;
+        ListSortType = listSortType;
+        FirstDayOfWeek = firstDayOfWeek;
+        NewTaskDueDate = newTaskDueDate;
+        TimeZoneId = timeZoneId;
     }
 }

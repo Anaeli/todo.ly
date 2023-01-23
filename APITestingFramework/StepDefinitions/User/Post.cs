@@ -1,10 +1,10 @@
-using System;
-using TechTalk.SpecFlow;
+﻿using System;
+using System.Text.Json;
 using Core;
+using Features.GeneralSteps;
 using Models;
 using RestSharp;
-using System.Text.Json;
-using Features.GeneralSteps;
+using TechTalk.SpecFlow;
 
 namespace Features.User.Post
 {
@@ -13,7 +13,7 @@ namespace Features.User.Post
     public class PostStepDefinitions : CommonSteps
     {
         private readonly ScenarioContext _scenarioContext;
-        private RestHelper client = new RestHelper("https://todo.ly/api");
+        private readonly RestHelper client = new RestHelper("https://todo.ly/api");
 
         public PostStepDefinitions(ScenarioContext scenarioContext) : base(scenarioContext)
         {

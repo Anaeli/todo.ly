@@ -1,10 +1,10 @@
-using System;
-using TechTalk.SpecFlow;
+﻿using System;
+using System.Text.Json;
 using Core;
+using Features.GeneralSteps;
 using Models;
 using RestSharp;
-using System.Text.Json;
-using Features.GeneralSteps;
+using TechTalk.SpecFlow;
 
 namespace Features.User.Get
 {
@@ -13,7 +13,7 @@ namespace Features.User.Get
     public class GetStepDefinitions : CommonSteps
     {
         private readonly ScenarioContext _scenarioContext;
-        private RestHelper client = new RestHelper("https://todo.ly/api");
+        private readonly RestHelper client = new RestHelper("https://todo.ly/api");
 
         public GetStepDefinitions(ScenarioContext scenarioContext) : base(scenarioContext)
         {

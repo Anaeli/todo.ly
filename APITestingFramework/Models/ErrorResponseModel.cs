@@ -1,13 +1,13 @@
-namespace Models;
+﻿namespace Models;
 
 public record ErrorResponseModel
 {
     public string ErrorMessage { get; set; }
     public int ErrorCode { get; set; }
 
-    public ErrorResponseModel(string ErrorMessage, int ErrorCode)
+    public ErrorResponseModel(string errorMessage, int errorCode)
     {
-        this.ErrorMessage = ErrorMessage;
-        this.ErrorCode = ErrorCode;
+        ErrorMessage = errorMessage;
+        ErrorCode = errorCode;
     }
 }

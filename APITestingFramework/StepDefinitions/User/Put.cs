@@ -1,24 +1,24 @@
-using System;
-using TechTalk.SpecFlow;
+﻿using System;
+using System.Text.Json;
 using Core;
+using Features.GeneralSteps;
 using Models;
 using RestSharp;
-using System.Text.Json;
-using Features.GeneralSteps;
+using TechTalk.SpecFlow;
 
 namespace Features.User.Put
 {
     [Binding]
     [Scope(Feature = "User Update")]
-	public class PutStepDefinitions : CommonSteps
-	{
-	    private readonly ScenarioContext _scenarioContext;
-        private RestHelper client = new RestHelper("https://todo.ly/api");
-	
-		public PutStepDefinitions(ScenarioContext scenarioContext) : base(scenarioContext)
-		{
-			_scenarioContext = scenarioContext;
-		}
+    public class PutStepDefinitions : CommonSteps
+    {
+        private readonly ScenarioContext _scenarioContext;
+        private readonly RestHelper client = new RestHelper("https://todo.ly/api");
+
+        public PutStepDefinitions(ScenarioContext scenarioContext) : base(scenarioContext)
+        {
+            _scenarioContext = scenarioContext;
+        }
 
         [When(@"the user submits a PUT request to the API endpoint with a valid JSON or XML payload")]
         public void WhentheusersubmitsaPUTrequesttotheAPIendpointwithavalidJSONorXMLpayload()
@@ -113,6 +113,5 @@ namespace Features.User.Put
             Assert.Equal("Not Authenticated", error!.ErrorMessage);
             Assert.Equal(102, error!.ErrorCode);
         }
-
-		}
-	}
+    }
+}

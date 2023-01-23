@@ -1,15 +1,15 @@
-using RestSharp;
-using RestSharp.Authenticators;
+﻿using System.Text.Json;
 using System.Threading.Tasks;
 using Models;
-using System.Text.Json;
+using RestSharp;
+using RestSharp.Authenticators;
 using RestSharp.Serializers.Json;
 
 namespace Core;
 
 public class RestHelper
 {
-    RestClient client;
+    private readonly RestClient client;
 
     public RestHelper(string uri)
     {
