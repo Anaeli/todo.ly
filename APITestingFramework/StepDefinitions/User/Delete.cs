@@ -2,6 +2,7 @@ using System;
 using TechTalk.SpecFlow;
 using Core;
 using Models;
+using RestSharp;
 
 namespace Features.User.Delete
 {
@@ -18,21 +19,26 @@ namespace Features.User.Delete
             _output = output;
         }
 
-        [Given(@"the user is authenticated")]
-        public void Giventheuserisauthenticated()
-        {
-            var credentialsKey = "Authorization";
-            var credentialsValue = "Basic amdpb2ZmcmVAaG90bWFpbC5jb206UGFzc3dvcmQ=";
-            client.AddDefaultHeader(credentialsKey, credentialsValue);
-        }
+        // [Given(@"the user is authenticated")]
+        // public void Giventheuserisauthenticated()
+        // {
+        //     var credentialsKey = "Authorization";
+        //     var credentialsValue = "Basic amdpb2ZmcmVAaG90bWFpbC5jb206UGFzc3dvcmQ=";
+        //     client.AddDefaultHeader(credentialsKey, credentialsValue);
+        // }
 
         [When(@"the user submits a DELETE request to the API endpoint")]
         public async void WhentheusersubmitsaDELETErequesttotheAPIendpoint()
         {
             var url = "user/0.json";
-            UserPayloadModel res = await client.DeleteAsync<UserPayloadModel>(url: url);
-            Console.WriteLine(res.Id);
-            _output.WriteLine(res.Id.ToString());
+            // UserPayloadModel res = await client.DeleteAsync<UserPayloadModel>(url: url);
+
+            client.AddDefaultHeader("Accept", "*/*");
+
+            var newClient = new RestClient("https://todo.ly/api");
+            var request = new RestRequest(url, Method.Delete);
+            var response = newClient.Execute(request);
+            // System.Console.WriteLine(response.Content);
         }
 
         [Then(
@@ -45,20 +51,20 @@ namespace Features.User.Delete
             string skere = "";
         }
 
-        [Given(@"the user is not authenticated")]
-        public void Giventheuserisnotauthenticated()
-        {
-            string skere = "";
-        }
+        // [Given(@"the user is not authenticated")]
+        // public void Giventheuserisnotauthenticated()
+        // {
+        //     string skere = "";
+        // }
 
-        [Then(
-            @"the API should return a (.*) status code and an error message indicating that the user is not authorized to access the resource."
-        )]
-        public void ThentheAPIshouldreturnastatuscodeandanerrormessageindicatingthattheuserisnotauthorizedtoaccesstheresource(
-            int args1
-        )
-        {
-            string skere = "";
-        }
+        // [Then(
+        //     @"the API should return a (.*) status code and an error message indicating that the user is not authorized to access the resource."
+        // )]
+        // public void ThentheAPIshouldreturnastatuscodeandanerrormessageindicatingthattheuserisnotauthorizedtoaccesstheresource(
+        //     int args1
+        // )
+        // {
+        //     string skere = "";
+        // }
     }
 }
