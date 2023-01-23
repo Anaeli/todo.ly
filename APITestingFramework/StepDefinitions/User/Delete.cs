@@ -1,44 +1,32 @@
 using System;
 using TechTalk.SpecFlow;
 using Core;
-using Models;
 using RestSharp;
+using Features.GeneralSteps;
+using Models;
+using System.Text.Json;
 
 namespace Features.User.Delete
 {
     [Binding]
-    public class DeleteStepDefinitions
+    [Scope(Feature = "User Deletion")]
+    public class DeleteStepDefinitions : CommonSteps
     {
         private readonly ScenarioContext _scenarioContext;
         private RestHelper client = new RestHelper("https://todo.ly/api");
-        private ITestOutputHelper _output;
 
-        public DeleteStepDefinitions(ScenarioContext scenarioContext, ITestOutputHelper output)
+        public DeleteStepDefinitions(ScenarioContext scenarioContext) : base(scenarioContext)
         {
             _scenarioContext = scenarioContext;
-            _output = output;
         }
 
-        // [Given(@"the user is authenticated")]
-        // public void Giventheuserisauthenticated()
-        // {
-        //     var credentialsKey = "Authorization";
-        //     var credentialsValue = "Basic amdpb2ZmcmVAaG90bWFpbC5jb206UGFzc3dvcmQ=";
-        //     client.AddDefaultHeader(credentialsKey, credentialsValue);
-        // }
-
         [When(@"the user submits a DELETE request to the API endpoint")]
-        public async void WhentheusersubmitsaDELETErequesttotheAPIendpoint()
+        public void WhentheusersubmitsaDELETErequesttotheAPIendpoint()
         {
             var url = "user/0.json";
-            // UserPayloadModel res = await client.DeleteAsync<UserPayloadModel>(url: url);
-
+            client.AddDefaultHeader("Authorization", _scenarioContext["Authorization"].ToString()!);
             client.AddDefaultHeader("Accept", "*/*");
-
-            var newClient = new RestClient("https://todo.ly/api");
-            var request = new RestRequest(url, Method.Delete);
-            var response = newClient.Execute(request);
-            // System.Console.WriteLine(response.Content);
+            _scenarioContext["Response"] = client.Delete(url);
         }
 
         [Then(
@@ -48,23 +36,29 @@ namespace Features.User.Delete
             int args1
         )
         {
-            string skere = "";
+            var response = (RestResponse)_scenarioContext["Response"];
+
+            Assert.True(response.IsSuccessful);
+            Assert.Equal(response.StatusCode.ToString(), "OK");
+            var user = JsonSerializer.Deserialize<UserPayloadModel>(response.Content!);
+            Assert.IsType<UserPayloadModel>(user);
         }
 
-        // [Given(@"the user is not authenticated")]
-        // public void Giventheuserisnotauthenticated()
-        // {
-        //     string skere = "";
-        // }
+        [Then(
+            @"the API should return a (.*) status code and an error message indicating that the user is not authorized to access the resource."
+        )]
+        public void ThentheAPIshouldreturnastatuscodeandanerrormessageindicatingthattheuserisnotauthorizedtoaccesstheresource(
+            int args1
+        )
+        {
+            var response = (RestResponse)_scenarioContext["Response"];
 
-        // [Then(
-        //     @"the API should return a (.*) status code and an error message indicating that the user is not authorized to access the resource."
-        // )]
-        // public void ThentheAPIshouldreturnastatuscodeandanerrormessageindicatingthattheuserisnotauthorizedtoaccesstheresource(
-        //     int args1
-        // )
-        // {
-        //     string skere = "";
-        // }
+            Assert.True(response.IsSuccessful);
+            Assert.Equal("OK", response.StatusCode.ToString());
+            var res = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
+            Assert.IsType<ErrorResponseModel>(res);
+            Assert.Equal("Not Authenticated", res!.ErrorMessage);
+            Assert.Equal(102, res!.ErrorCode);
+        }
     }
 }
