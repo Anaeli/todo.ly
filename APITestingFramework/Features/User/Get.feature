@@ -1,4 +1,4 @@
-Feature: Retrieve an existing user in https://todo.ly/ website. API endpoint https://todo.ly/api/user.xml
+Feature: Retrieve an existing user
     As an authenticated user, I want to be able to retrieve the information of an existing user account.
 
     Scenario: Retrieve a user
