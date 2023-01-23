@@ -3,6 +3,8 @@ using TechTalk.SpecFlow;
 using Core;
 using RestSharp;
 using Features.GeneralSteps;
+using Models;
+using System.Text.Json;
 
 namespace Features.User.Delete
 {
@@ -12,7 +14,6 @@ namespace Features.User.Delete
     {
         private readonly ScenarioContext _scenarioContext;
         private RestHelper client = new RestHelper("https://todo.ly/api");
-        RestResponse response;
 
         public DeleteStepDefinitions(ScenarioContext scenarioContext) : base(scenarioContext)
         {
@@ -23,10 +24,9 @@ namespace Features.User.Delete
         public void WhentheusersubmitsaDELETErequesttotheAPIendpoint()
         {
             var url = "user/0.json";
-
             client.AddDefaultHeader("Authorization", _scenarioContext["Authorization"].ToString()!);
             client.AddDefaultHeader("Accept", "*/*");
-            response = client.Delete(url);
+            _scenarioContext["Response"] = client.Delete(url);
         }
 
         [Then(
@@ -36,7 +36,12 @@ namespace Features.User.Delete
             int args1
         )
         {
-            string skere = "";
+            var response = (RestResponse)_scenarioContext["Response"];
+
+            Assert.True(response.IsSuccessful);
+            Assert.Equal(response.StatusCode.ToString(), "OK");
+            var user = JsonSerializer.Deserialize<UserPayloadModel>(response.Content!);
+            Assert.IsType<UserPayloadModel>(user);
         }
 
         [Then(
@@ -46,7 +51,14 @@ namespace Features.User.Delete
             int args1
         )
         {
-            string skere = "";
+            var response = (RestResponse)_scenarioContext["Response"];
+
+            Assert.True(response.IsSuccessful);
+            Assert.Equal("OK", response.StatusCode.ToString());
+            var res = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
+            Assert.IsType<ErrorResponseModel>(res);
+            Assert.Equal("Not Authenticated", res!.ErrorMessage);
+            Assert.Equal(102, res!.ErrorCode);
         }
     }
 }

@@ -1,5 +1,4 @@
 namespace Models;
-using System.Text.Json.Serialization;
 
 public record UserPayloadModel
 {

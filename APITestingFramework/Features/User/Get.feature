@@ -6,9 +6,9 @@ Feature: Retrieve an existing user
         When the user submits a GET request to the API endpoint with a valid user ID
         Then the API should return a 200 status code and the requested user in JSON format
 
-    Scenario: Retrieve a user with invalid user ID
+    Scenario: Retrieve a user with invalid user email
         Given the user is authenticated
-        When the user submits a GET request to the API endpoint with an invalid user ID in the URL
+        When the user submits a GET request to the API endpoint with an invalid user email in the URL
         Then the API should return a 404 status code and an error message indicating that the user was not found
 
     Scenario: Unauthorized access

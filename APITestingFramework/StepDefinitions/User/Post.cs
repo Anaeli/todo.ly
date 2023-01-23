@@ -14,20 +14,11 @@ namespace Features.User.Post
     {
         private readonly ScenarioContext _scenarioContext;
         private RestHelper client = new RestHelper("https://todo.ly/api");
-        RestResponse response;
 
         public PostStepDefinitions(ScenarioContext scenarioContext) : base(scenarioContext)
         {
             _scenarioContext = scenarioContext;
         }
-
-        // [Given(@"the user is not authenticated")]
-        // public void Giventheuserisnotauthenticated()
-        // {
-        //     var credentialsKey = "Authorization";
-        //     var credentialsValue = "Basic amdpb2ZmcmVAaG90bWFpbC5jb206UGFzc3dvcmQ=";
-        //     client.AddDefaultHeader(credentialsKey, credentialsValue);
-        // }
 
         [When(
             @"the user submits a POST request to the API endpoint with a valid JSON or XML payload"
@@ -50,7 +41,7 @@ namespace Features.User.Post
                 null,
                 null
             );
-            response = client.Post<UserPayloadModel>(url, body);
+            _scenarioContext["Response"] = client.Post<UserPayloadModel>(url, body);
         }
 
         [Then(
@@ -60,9 +51,9 @@ namespace Features.User.Post
             int args1
         )
         {
+            var response = (RestResponse)_scenarioContext["Response"];
             Assert.True(response.IsSuccessful);
-            Assert.Equal(response.StatusCode.ToString(), "OK");
-
+            Assert.Equal("OK", response.StatusCode.ToString());
             var user = JsonSerializer.Deserialize<UserPayloadModel>(response.Content!);
             Assert.IsType<UserPayloadModel>(user);
         }
@@ -72,7 +63,23 @@ namespace Features.User.Post
         )]
         public void WhentheusersubmitsaPOSTrequesttotheAPIendpointwithaJSONorXMLpayloadthatismissingrequiredfields()
         {
-            string skere = "";
+            var url = "user.json";
+            var body = new UserPayloadModel(
+                "",
+                "password",
+                "fullname",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+            );
+            _scenarioContext["Response"] = client.Post<UserPayloadModel>(url, body);
         }
 
         [Then(
@@ -82,7 +89,14 @@ namespace Features.User.Post
             int args1
         )
         {
-            string skere = "";
+            var response = (RestResponse)_scenarioContext["Response"];
+
+            Assert.True(response.IsSuccessful);
+            Assert.Equal("OK", response.StatusCode.ToString());
+            var res = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
+            Assert.IsType<ErrorResponseModel>(res);
+            Assert.Equal("Invalid Email Address", res!.ErrorMessage);
+            Assert.Equal(307, res!.ErrorCode);
         }
 
         [When(

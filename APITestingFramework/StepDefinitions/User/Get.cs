@@ -14,7 +14,6 @@ namespace Features.User.Get
     {
         private readonly ScenarioContext _scenarioContext;
         private RestHelper client = new RestHelper("https://todo.ly/api");
-        RestResponse response;
 
         public GetStepDefinitions(ScenarioContext scenarioContext) : base(scenarioContext)
         {
@@ -28,27 +27,32 @@ namespace Features.User.Get
             client.AddDefaultHeader("Authorization", _scenarioContext["Authorization"].ToString()!);
             client.AddDefaultHeader("Accept", "*/*");
 
-            response = client.Get(url);
+            _scenarioContext["Response"] = client.Get(url);
         }
 
         [Then(@"the API should return a (.*) status code and the requested user in JSON format")]
         public void ThentheAPIshouldreturnastatuscodeandtherequesteduserinJSONformat(int args1)
         {
+
+            var response = (RestResponse)_scenarioContext["Response"];
+
             Assert.True(response.IsSuccessful);
-            Assert.Equal(response.StatusCode.ToString(), "OK");
+            Assert.Equal("OK", response.StatusCode.ToString());
 
             var user = JsonSerializer.Deserialize<UserPayloadModel>(response.Content!);
-            System.Console.WriteLine(response.Content!);
             Assert.IsType<UserPayloadModel>(user);
         }
 
         [When(
-            @"the user submits a GET request to the API endpoint with an invalid user ID in the URL"
+            @"the user submits a GET request to the API endpoint with an invalid user email in the URL"
         )]
         public void WhentheusersubmitsaGETrequesttotheAPIendpointwithaninvaliduserIDintheURL()
         {
-            client.AddDefaultHeader("Authorization", _scenarioContext["Authorization"].ToString()!);
-            string skere = "";
+            var url = "user.json";
+            client.AddDefaultHeader("Authorization", "Basic aW52YWxpZEBlbWFpbC5jb206UGFzc3dvcmQ=");
+            client.AddDefaultHeader("Accept", "*/*");
+
+            _scenarioContext["Response"] = client.Get(url);
         }
 
         [Then(
@@ -58,13 +62,24 @@ namespace Features.User.Get
             int args1
         )
         {
-            string skere = "";
+            var response = (RestResponse)_scenarioContext["Response"];
+
+            Assert.True(response.IsSuccessful);
+            Assert.Equal("OK", response.StatusCode.ToString());
+
+            var error = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
+            Assert.IsType<ErrorResponseModel>(error);
+            Assert.Equal("Account doesn't exist", error!.ErrorMessage);
+            Assert.Equal(105, error!.ErrorCode);
         }
 
         [When(@"the user submits a GET request to the API endpoint")]
         public void WhentheusersubmitsaGETrequesttotheAPIendpoint()
         {
-            string skere = "";
+            var url = "user.json";
+            client.AddDefaultHeader("Accept", "*/*");
+
+            _scenarioContext["Response"] = client.Get(url);
         }
 
         [Then(
@@ -74,7 +89,15 @@ namespace Features.User.Get
             int args1
         )
         {
-            string skere = "";
+            var response = (RestResponse)_scenarioContext["Response"];
+
+            Assert.True(response.IsSuccessful);
+            Assert.Equal("OK", response.StatusCode.ToString());
+
+            var error = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
+            Assert.IsType<ErrorResponseModel>(error);
+            Assert.Equal("Not Authenticated", error!.ErrorMessage);
+            Assert.Equal(102, error!.ErrorCode);
         }
     }
 }
