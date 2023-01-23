@@ -14,11 +14,24 @@ public record UserPayloadModel
     public bool? EditDueDateMoreExpanded { get; set; } = null;
     public int? ListSortType { get; set; } = null;
     public int? FirstDayOfWeek { get; set; } = null;
-    public int? NewTaskDueDate { get; set; } = null;      
-    public string? TimeZoneId { get; set; } = null;      
+    public int? NewTaskDueDate { get; set; } = null;
+    public string? TimeZoneId { get; set; } = null;
 
-
-    public UserPayloadModel (long? Id, string Email, string Password, string FullName, double? TimeZone, bool? IsProUser, long? DefaultProjectId, bool? AddItemMoreExpanded, bool? EditDueDateMoreExpanded, int? ListSortType, int? FirstDayOfWeek, int? NewTaskDueDate, string? TimeZoneId)
+    public UserPayloadModel(
+        string Email,
+        string Password,
+        string FullName,
+        long? Id,
+        double? TimeZone,
+        bool? IsProUser,
+        long? DefaultProjectId,
+        bool? AddItemMoreExpanded,
+        bool? EditDueDateMoreExpanded,
+        int? ListSortType,
+        int? FirstDayOfWeek,
+        int? NewTaskDueDate,
+        string? TimeZoneId
+    )
     {
         this.Id = Id;
         this.Email = Email;
@@ -35,5 +48,3 @@ public record UserPayloadModel
         this.TimeZoneId = TimeZoneId;
     }
 }
-
-

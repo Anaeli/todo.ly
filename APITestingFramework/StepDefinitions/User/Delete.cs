@@ -1,44 +1,32 @@
 using System;
 using TechTalk.SpecFlow;
 using Core;
-using Models;
 using RestSharp;
+using Features.GeneralSteps;
 
 namespace Features.User.Delete
 {
     [Binding]
-    public class DeleteStepDefinitions
+    [Scope(Feature = "User Deletion")]
+    public class DeleteStepDefinitions : CommonSteps
     {
         private readonly ScenarioContext _scenarioContext;
         private RestHelper client = new RestHelper("https://todo.ly/api");
-        private ITestOutputHelper _output;
+        RestResponse response;
 
-        public DeleteStepDefinitions(ScenarioContext scenarioContext, ITestOutputHelper output)
+        public DeleteStepDefinitions(ScenarioContext scenarioContext) : base(scenarioContext)
         {
             _scenarioContext = scenarioContext;
-            _output = output;
         }
 
-        // [Given(@"the user is authenticated")]
-        // public void Giventheuserisauthenticated()
-        // {
-        //     var credentialsKey = "Authorization";
-        //     var credentialsValue = "Basic amdpb2ZmcmVAaG90bWFpbC5jb206UGFzc3dvcmQ=";
-        //     client.AddDefaultHeader(credentialsKey, credentialsValue);
-        // }
-
         [When(@"the user submits a DELETE request to the API endpoint")]
-        public async void WhentheusersubmitsaDELETErequesttotheAPIendpoint()
+        public void WhentheusersubmitsaDELETErequesttotheAPIendpoint()
         {
             var url = "user/0.json";
-            // UserPayloadModel res = await client.DeleteAsync<UserPayloadModel>(url: url);
 
+            client.AddDefaultHeader("Authorization", _scenarioContext["Authorization"].ToString()!);
             client.AddDefaultHeader("Accept", "*/*");
-
-            var newClient = new RestClient("https://todo.ly/api");
-            var request = new RestRequest(url, Method.Delete);
-            var response = newClient.Execute(request);
-            // System.Console.WriteLine(response.Content);
+            response = client.Delete(url);
         }
 
         [Then(
@@ -51,20 +39,14 @@ namespace Features.User.Delete
             string skere = "";
         }
 
-        // [Given(@"the user is not authenticated")]
-        // public void Giventheuserisnotauthenticated()
-        // {
-        //     string skere = "";
-        // }
-
-        // [Then(
-        //     @"the API should return a (.*) status code and an error message indicating that the user is not authorized to access the resource."
-        // )]
-        // public void ThentheAPIshouldreturnastatuscodeandanerrormessageindicatingthattheuserisnotauthorizedtoaccesstheresource(
-        //     int args1
-        // )
-        // {
-        //     string skere = "";
-        // }
+        [Then(
+            @"the API should return a (.*) status code and an error message indicating that the user is not authorized to access the resource."
+        )]
+        public void ThentheAPIshouldreturnastatuscodeandanerrormessageindicatingthattheuserisnotauthorizedtoaccesstheresource(
+            int args1
+        )
+        {
+            string skere = "";
+        }
     }
 }
