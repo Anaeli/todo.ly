@@ -6,6 +6,10 @@
 # Code Coverage report
 .coveragereport/
 
+# dotenv environment variables file
+.env
+.env.test
+
 #Livingdoc reports
 ReportOutputs/
 LivingDoc.html

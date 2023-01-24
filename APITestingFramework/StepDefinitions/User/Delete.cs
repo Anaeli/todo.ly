@@ -33,13 +33,13 @@ namespace Features.User.Delete
             @"the API should return a (.*) status code and the user should be removed from the database"
         )]
         public void ThentheAPIshouldreturnastatuscodeandtheusershouldberemovedfromthedatabase(
-            int args1
+            string statusCode
         )
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
 
             Assert.True(response.IsSuccessful);
-            Assert.Equal("OK", response.StatusCode.ToString());
+            Assert.Equal(statusCode, response.StatusCode.ToString());
             var user = JsonSerializer.Deserialize<UserPayloadModel>(response.Content!);
             Assert.IsType<UserPayloadModel>(user);
         }
@@ -48,13 +48,13 @@ namespace Features.User.Delete
             @"the API should return a (.*) status code and an error message indicating that the user is not authorized to access the resource."
         )]
         public void ThentheAPIshouldreturnastatuscodeandanerrormessageindicatingthattheuserisnotauthorizedtoaccesstheresource(
-            int args1
+            string statusCode
         )
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
 
             Assert.True(response.IsSuccessful);
-            Assert.Equal("OK", response.StatusCode.ToString());
+            Assert.Equal(statusCode, response.StatusCode.ToString());
             var res = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
             Assert.IsType<ErrorResponseModel>(res);
             Assert.Equal("Not Authenticated", res!.ErrorMessage);

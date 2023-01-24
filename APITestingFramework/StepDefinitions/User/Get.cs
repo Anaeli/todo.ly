@@ -31,13 +31,13 @@ namespace Features.User.Get
         }
 
         [Then(@"the API should return a (.*) status code and the requested user in JSON format")]
-        public void ThentheAPIshouldreturnastatuscodeandtherequesteduserinJSONformat(int args1)
+        public void ThentheAPIshouldreturnastatuscodeandtherequesteduserinJSONformat(string statusCode)
         {
 
             RestResponse response = (RestResponse)_scenarioContext["Response"];
 
             Assert.True(response.IsSuccessful);
-            Assert.Equal("OK", response.StatusCode.ToString());
+            Assert.Equal(statusCode, response.StatusCode.ToString());
 
             var user = JsonSerializer.Deserialize<UserPayloadModel>(response.Content!);
             Assert.IsType<UserPayloadModel>(user);
@@ -59,13 +59,13 @@ namespace Features.User.Get
             @"the API should return a (.*) status code and an error message indicating that the user was not found"
         )]
         public void ThentheAPIshouldreturnastatuscodeandanerrormessageindicatingthattheuserwasnotfound(
-            int args1
+            string statusCode
         )
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
 
             Assert.True(response.IsSuccessful);
-            Assert.Equal("OK", response.StatusCode.ToString());
+            Assert.Equal(statusCode, response.StatusCode.ToString());
 
             var error = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
             Assert.IsType<ErrorResponseModel>(error);
@@ -86,13 +86,13 @@ namespace Features.User.Get
             @"the API should return a (.*) status code and an error message indicating that the user is not authorized to access the resource."
         )]
         public void ThentheAPIshouldreturnastatuscodeandanerrormessageindicatingthattheuserisnotauthorizedtoaccesstheresource(
-            int args1
+            string statusCode
         )
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
 
             Assert.True(response.IsSuccessful);
-            Assert.Equal("OK", response.StatusCode.ToString());
+            Assert.Equal(statusCode, response.StatusCode.ToString());
 
             var error = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
             Assert.IsType<ErrorResponseModel>(error);

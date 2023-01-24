@@ -4,9 +4,9 @@ Feature: User Deletion
     Scenario: Delete a user
         Given the user is authenticated
         When the user submits a DELETE request to the API endpoint
-        Then the API should return a 204 status code and the user should be removed from the database
+        Then the API should return a OK status code and the user should be removed from the database
 
     Scenario: Unauthorized access
         Given the user is not authenticated
         When the user submits a DELETE request to the API endpoint
-        Then the API should return a 401 status code and an error message indicating that the user is not authorized to access the resource.
+        Then the API should return a OK status code and an error message indicating that the user is not authorized to access the resource.

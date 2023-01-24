@@ -48,12 +48,12 @@ namespace Features.User.Post
             @"the API should return a (.*) status code and the new user should be added to the database"
         )]
         public void ThentheAPIshouldreturnastatuscodeandthenewusershouldbeaddedtothedatabase(
-            int args1
+            string statusCode
         )
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
             Assert.True(response.IsSuccessful);
-            Assert.Equal("OK", response.StatusCode.ToString());
+            Assert.Equal(statusCode, response.StatusCode.ToString());
             var user = JsonSerializer.Deserialize<UserPayloadModel>(response.Content!);
             Assert.IsType<UserPayloadModel>(user);
         }
@@ -86,13 +86,13 @@ namespace Features.User.Post
             @"the API should return a (.*) status code and an error message indicating that the required fields are missing"
         )]
         public void ThentheAPIshouldreturnastatuscodeandanerrormessageindicatingthattherequiredfieldsaremissing(
-            int args1
+            string statusCode
         )
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
 
             Assert.True(response.IsSuccessful);
-            Assert.Equal("OK", response.StatusCode.ToString());
+            Assert.Equal(statusCode, response.StatusCode.ToString());
             var res = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
             Assert.IsType<ErrorResponseModel>(res);
             Assert.Equal("Invalid Email Address", res!.ErrorMessage);
@@ -127,13 +127,13 @@ namespace Features.User.Post
             @"the API should return a (.*) status code and an error message indicating that the data is invalid"
         )]
         public void ThentheAPIshouldreturnastatuscodeandanerrormessageindicatingthatthedataisinvalid(
-            int args1
+            string statusCode
         )
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
 
             Assert.True(response.IsSuccessful);
-            Assert.Equal("OK", response.StatusCode.ToString());
+            Assert.Equal(statusCode, response.StatusCode.ToString());
             var res = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
             Assert.IsType<ErrorResponseModel>(res);
             Assert.Equal("Invalid Email Address", res!.ErrorMessage);
@@ -168,13 +168,13 @@ namespace Features.User.Post
             @"the API should return a (.*) status code and an error message indicating that an account with the email provided already exists"
         )]
         public void ThentheAPIshouldreturnastatuscodeandanerrormessageindicatingthatanaccountwiththeemailprovidedalreadyexists(
-            int args1
+            string statusCode
         )
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
 
             Assert.True(response.IsSuccessful);
-            Assert.Equal("OK", response.StatusCode.ToString());
+            Assert.Equal(statusCode, response.StatusCode.ToString());
             var res = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
             Assert.IsType<ErrorResponseModel>(res);
             Assert.Equal("Account with this email address already exists", res!.ErrorMessage);

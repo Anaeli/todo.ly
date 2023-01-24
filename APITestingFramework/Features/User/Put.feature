@@ -4,15 +4,15 @@ Feature: User Update
     Scenario: Update a user
         Given the user is authenticated
         When the user submits a PUT request to the API endpoint with a valid JSON or XML payload
-        Then the API should return a 200 status code and the user should be updated in the database
+        Then the API should return a OK status code and the user should be updated in the database
 
     Scenario: Update a user with invalid user credentials
         Given the user is authenticated
-        When the user submits a PUT request to the API endpoint with an invalid user email
-        Then the API should return a 404 status code and an error message indicating that the user was not found
+        When the user submits a PUT request to the API endpoint with an invalid "invalid@correo" user email
+        Then the API should return a OK status code and an error message indicating that the user was not found
 
     Scenario: Unauthorized access
         Given the user is not authenticated
         When the user submits a PUT request to the API endpoint
-        Then the API should return a 401 status code and an error message indicating that the user is not authorized to access the resource.
+        Then the API should return a OK status code and an error message indicating that the user is not authorized to access the resource.
 

@@ -43,18 +43,18 @@ namespace Features.User.Put
         }
 
         [Then(@"the API should return a (.*) status code and the user should be updated in the database")]
-        public void ThentheAPIshouldreturnastatuscodeandtheusershouldbeupdatedinthedatabase(int args1)
+        public void ThentheAPIshouldreturnastatuscodeandtheusershouldbeupdatedinthedatabase(string statusCode)
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
             Assert.True(response.IsSuccessful);
-            Assert.Equal("OK", response.StatusCode.ToString());
+            Assert.Equal(statusCode, response.StatusCode.ToString());
             var user = JsonSerializer.Deserialize<UserPayloadModel>(response.Content!);
             Assert.IsType<UserPayloadModel>(user);
             // Assert.Equal("newPassword", user?.Password);
         }
 
-        [When(@"the user submits a PUT request to the API endpoint with an invalid user email")]
-        public void WhentheusersubmitsaPUTrequesttotheAPIendpointwithaninvaliduseremail()
+[When(@"the user submits a PUT request to the API endpoint with an invalid ""(.*)"" user email")]
+public void WhentheusersubmitsaPUTrequesttotheAPIendpointwithaninvaliduseremail(string email)
         {
             string url = "user/0.json";
             client.AddDefaultHeader("Authorization", "Basic aW52YWxpZEBlbWFpbC5jb206UGFzc3dvcmQ=");
@@ -79,12 +79,12 @@ namespace Features.User.Put
         }
 
         [Then(@"the API should return a (.*) status code and an error message indicating that the user was not found")]
-        public void ThentheAPIshouldreturnastatuscodeandanerrormessageindicatingthattheuserwasnotfound(int args1)
+        public void ThentheAPIshouldreturnastatuscodeandanerrormessageindicatingthattheuserwasnotfound(string statusCode)
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
 
             Assert.True(response.IsSuccessful);
-            Assert.Equal("OK", response.StatusCode.ToString());
+            Assert.Equal(statusCode, response.StatusCode.ToString());
 
             var error = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
             Assert.IsType<ErrorResponseModel>(error);
@@ -101,12 +101,12 @@ namespace Features.User.Put
         }
 
         [Then(@"the API should return a (.*) status code and an error message indicating that the user is not authorized to access the resource.")]
-        public void ThentheAPIshouldreturnastatuscodeandanerrormessageindicatingthattheuserisnotauthorizedtoaccesstheresource(int args1)
+        public void ThentheAPIshouldreturnastatuscodeandanerrormessageindicatingthattheuserisnotauthorizedtoaccesstheresource(string statusCode)
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
 
             Assert.True(response.IsSuccessful);
-            Assert.Equal("OK", response.StatusCode.ToString());
+            Assert.Equal(statusCode, response.StatusCode.ToString());
 
             var error = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
             Assert.IsType<ErrorResponseModel>(error);

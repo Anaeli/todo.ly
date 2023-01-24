@@ -4,14 +4,14 @@ Feature: Retrieve an existing user
     Scenario: Retrieve a user
         Given the user is authenticated
         When the user submits a GET request to the API endpoint with a valid user ID
-        Then the API should return a 200 status code and the requested user in JSON format
+        Then the API should return a OK status code and the requested user in JSON format
 
     Scenario: Retrieve a user with invalid user email
         Given the user is authenticated
         When the user submits a GET request to the API endpoint with an invalid user email in the URL
-        Then the API should return a 404 status code and an error message indicating that the user was not found
+        Then the API should return a OK status code and an error message indicating that the user was not found
 
     Scenario: Unauthorized access
         Given the user is not authenticated
         When the user submits a GET request to the API endpoint
-        Then the API should return a 401 status code and an error message indicating that the user is not authorized to access the resource.
+        Then the API should return a OK status code and an error message indicating that the user is not authorized to access the resource.
