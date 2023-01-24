@@ -1,27 +1,48 @@
-using System;
+﻿using System;
+using System.Text.Json;
+using Core;
+// using Features.GeneralSteps;
+using Models;
+using RestSharp;
 using TechTalk.SpecFlow;
 
 namespace StepDefinitions.Project.Update
 {
     [Binding]
+    [Scope(Feature = "Update a Project by ID")]
     public class StepDefinitionsUpdate
     {
         private readonly ScenarioContext _scenarioContext;
+        private readonly RestHelper client = new RestHelper("https://todo.ly/api");
+        private readonly ProjectObject? Project;
+        private string ApiUrl = "";
 
         public StepDefinitionsUpdate(ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext;
         }
 
-        [Given("the user is authenticated in (.*) to update the projects")]
-        public void Giventheuserisauthenticatedinpagetoupdatetheprojects(string s)
+        [Given("the user is authenticated")]
+        public void Giventheuserisauthenticatedinpagetoupdatetheprojects()
         {
-            // _scenarioContext.Pending();
+            //COMMON
         }
 
-        [When("the user sends a PUT request to the (.*) endpoint")]
-        public void WhentheusersendsaPUTrequesttothehttpstodolyapiprojectsidjsonendpoint(string Id)
+        [When("the user sends a PUT request for the project with ID (.*) to the API endpoint")]
+        public void WhentheusersendsaPUTrequesttothehttpstodolyapiprojectsidjsonendpoint(long id)
         {
+            // ApiUrl = $"projects/{id}.json";
+            // client.AddDefaultHeader("Authorization", "Basic VmFsZXJpYS5Hb256YWxlc0BqYWxhLnVuaXZlcnNpdHk6MTIzNA==");
+            // client.AddDefaultHeader("Accept", "*/*");
+
+            // _scenarioContext["Response"] = client.Get(ApiUrl);
+            // var response = (RestResponse)_scenarioContext["Response"];
+            // ProjectPayloadModel? project = JsonSerializer.Deserialize<ProjectPayloadModel>(response.Content!);
+
+                
+            // _scenarioContext["Response"] = client.Put<ProjectPayloadModel>(ApiUrl, body);
+            // var response = (RestResponse)_scenarioContext["Response"];
+            // Assert.Equal(project!.Content , "d");
             // _scenarioContext.Pending();
         }
 
@@ -42,6 +63,5 @@ namespace StepDefinitions.Project.Update
         {
             // _scenarioContext.Pending();
         }
-
     }
 }
