@@ -1,6 +1,4 @@
-﻿using System;
-using System.Text.Json;
-using Core;
+﻿using System.Text.Json;
 using Features.GeneralSteps;
 using Models;
 using RestSharp;
@@ -13,7 +11,6 @@ namespace Features.User.Post
     public class PostStepDefinitions : CommonSteps
     {
         private readonly ScenarioContext _scenarioContext;
-        private readonly RestHelper client = new RestHelper("https://todo.ly/api");
 
         public PostStepDefinitions(ScenarioContext scenarioContext) : base(scenarioContext)
         {
@@ -82,12 +79,8 @@ namespace Features.User.Post
             _scenarioContext["Response"] = client.Post<UserPayloadModel>(url, body);
         }
 
-        [Then(
-            @"the API should return a (.*) status code and an error message indicating that the required fields are missing"
-        )]
-        public void ThentheAPIshouldreturnastatuscodeandanerrormessageindicatingthattherequiredfieldsaremissing(
-            string statusCode
-        )
+[Then(@"the API should return a ""(.*)"" status code and a ""(.*)"" error message indicating missing fields")]
+public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatingmissingfields(string statusCode,string errorMessage)
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
 
@@ -95,7 +88,7 @@ namespace Features.User.Post
             Assert.Equal(statusCode, response.StatusCode.ToString());
             var res = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
             Assert.IsType<ErrorResponseModel>(res);
-            Assert.Equal("Invalid Email Address", res!.ErrorMessage);
+            Assert.Equal(errorMessage, res!.ErrorMessage);
             Assert.Equal(307, res!.ErrorCode);
         }
 
@@ -123,12 +116,8 @@ namespace Features.User.Post
             _scenarioContext["Response"] = client.Post<UserPayloadModel>(url, body);
         }
 
-        [Then(
-            @"the API should return a (.*) status code and an error message indicating that the data is invalid"
-        )]
-        public void ThentheAPIshouldreturnastatuscodeandanerrormessageindicatingthatthedataisinvalid(
-            string statusCode
-        )
+[Then(@"the API should return a ""(.*)"" status code and a ""(.*)"" error message indicating invalid data")]
+public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatinginvaliddata(string statusCode,string errorMessage)
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
 
@@ -136,7 +125,7 @@ namespace Features.User.Post
             Assert.Equal(statusCode, response.StatusCode.ToString());
             var res = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
             Assert.IsType<ErrorResponseModel>(res);
-            Assert.Equal("Invalid Email Address", res!.ErrorMessage);
+            Assert.Equal(errorMessage, res!.ErrorMessage);
             Assert.Equal(307, res!.ErrorCode);
         }
 
@@ -164,12 +153,8 @@ namespace Features.User.Post
             _scenarioContext["Response"] = client.Post<UserPayloadModel>(url, body);
         }
 
-        [Then(
-            @"the API should return a (.*) status code and an error message indicating that an account with the email provided already exists"
-        )]
-        public void ThentheAPIshouldreturnastatuscodeandanerrormessageindicatingthatanaccountwiththeemailprovidedalreadyexists(
-            string statusCode
-        )
+[Then(@"the API should return a ""(.*)"" status code and a ""(.*)"" error message indicating the email already exists")]
+public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatingtheemailalreadyexists(string statusCode,string errorMessage)
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
 
@@ -177,7 +162,7 @@ namespace Features.User.Post
             Assert.Equal(statusCode, response.StatusCode.ToString());
             var res = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
             Assert.IsType<ErrorResponseModel>(res);
-            Assert.Equal("Account with this email address already exists", res!.ErrorMessage);
+            Assert.Equal(errorMessage, res!.ErrorMessage);
             Assert.Equal(201, res!.ErrorCode);
         }
     }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Text.Json;
-using Core;
+﻿using System.Text.Json;
 using Features.GeneralSteps;
 using Models;
 using RestSharp;
@@ -13,7 +11,6 @@ namespace Features.User.Get
     public class GetStepDefinitions : CommonSteps
     {
         private readonly ScenarioContext _scenarioContext;
-        private readonly RestHelper client = new RestHelper("https://todo.ly/api");
 
         public GetStepDefinitions(ScenarioContext scenarioContext) : base(scenarioContext)
         {
@@ -55,12 +52,8 @@ namespace Features.User.Get
             _scenarioContext["Response"] = client.Get(url);
         }
 
-        [Then(
-            @"the API should return a (.*) status code and an error message indicating that the user was not found"
-        )]
-        public void ThentheAPIshouldreturnastatuscodeandanerrormessageindicatingthattheuserwasnotfound(
-            string statusCode
-        )
+[Then(@"the API should return a ""(.*)"" status code and a ""(.*)"" error message indicating that the user was not found")]
+public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatingthattheuserwasnotfound(string statusCode,string errorMessage)
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
 
@@ -69,7 +62,7 @@ namespace Features.User.Get
 
             var error = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
             Assert.IsType<ErrorResponseModel>(error);
-            Assert.Equal("Account doesn't exist", error!.ErrorMessage);
+            Assert.Equal(errorMessage, error!.ErrorMessage);
             Assert.Equal(105, error!.ErrorCode);
         }
 
@@ -82,12 +75,8 @@ namespace Features.User.Get
             _scenarioContext["Response"] = client.Get(url);
         }
 
-        [Then(
-            @"the API should return a (.*) status code and an error message indicating that the user is not authorized to access the resource."
-        )]
-        public void ThentheAPIshouldreturnastatuscodeandanerrormessageindicatingthattheuserisnotauthorizedtoaccesstheresource(
-            string statusCode
-        )
+[Then(@"the API should return a ""(.*)"" status code and a ""(.*)"" error message indicating that the user is not authorized to access the resource.")]
+public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatingthattheuserisnotauthorizedtoaccesstheresource(string statusCode,string errorMessage)
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
 
@@ -96,7 +85,7 @@ namespace Features.User.Get
 
             var error = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
             Assert.IsType<ErrorResponseModel>(error);
-            Assert.Equal("Not Authenticated", error!.ErrorMessage);
+            Assert.Equal(errorMessage, error!.ErrorMessage);
             Assert.Equal(102, error!.ErrorCode);
         }
     }

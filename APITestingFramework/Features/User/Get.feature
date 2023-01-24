@@ -9,9 +9,9 @@ Feature: Retrieve an existing user
     Scenario: Retrieve a user with invalid user email
         Given the user is authenticated
         When the user submits a GET request to the API endpoint with an invalid user email in the URL
-        Then the API should return a OK status code and an error message indicating that the user was not found
+        Then the API should return a "OK" status code and a "Account doesn't exist" error message indicating that the user was not found
 
     Scenario: Unauthorized access
         Given the user is not authenticated
         When the user submits a GET request to the API endpoint
-        Then the API should return a OK status code and an error message indicating that the user is not authorized to access the resource.
+        Then the API should return a "OK" status code and a "Not Authenticated" error message indicating that the user is not authorized to access the resource.

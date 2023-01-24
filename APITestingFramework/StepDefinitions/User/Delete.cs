@@ -13,7 +13,6 @@ namespace Features.User.Delete
     public class DeleteStepDefinitions : CommonSteps
     {
         private readonly ScenarioContext _scenarioContext;
-        private readonly RestHelper client = new RestHelper("https://todo.ly/api");
 
         public DeleteStepDefinitions(ScenarioContext scenarioContext) : base(scenarioContext)
         {
@@ -44,12 +43,8 @@ namespace Features.User.Delete
             Assert.IsType<UserPayloadModel>(user);
         }
 
-        [Then(
-            @"the API should return a (.*) status code and an error message indicating that the user is not authorized to access the resource."
-        )]
-        public void ThentheAPIshouldreturnastatuscodeandanerrormessageindicatingthattheuserisnotauthorizedtoaccesstheresource(
-            string statusCode
-        )
+[Then(@"the API should return a ""(.*)"" status code and a ""(.*)"" error message indicating that the user is not authorized to access the resource.")]
+public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatingthattheuserisnotauthorizedtoaccesstheresource(string statusCode, string errorMessage)
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
 
@@ -57,7 +52,7 @@ namespace Features.User.Delete
             Assert.Equal(statusCode, response.StatusCode.ToString());
             var res = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
             Assert.IsType<ErrorResponseModel>(res);
-            Assert.Equal("Not Authenticated", res!.ErrorMessage);
+            Assert.Equal(errorMessage, res!.ErrorMessage);
             Assert.Equal(102, res!.ErrorCode);
         }
     }

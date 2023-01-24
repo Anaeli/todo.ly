@@ -13,7 +13,6 @@ namespace Features.User.Put
     public class PutStepDefinitions : CommonSteps
     {
         private readonly ScenarioContext _scenarioContext;
-        private readonly RestHelper client = new RestHelper("https://todo.ly/api");
 
         public PutStepDefinitions(ScenarioContext scenarioContext) : base(scenarioContext)
         {

@@ -1,12 +1,14 @@
 ﻿using TechTalk.SpecFlow;
 using DotNetEnv;
 using System;
+using Core;
 
 namespace Features.GeneralSteps
 {
     public class CommonSteps
     {
         private readonly ScenarioContext _scenarioContext;
+        public readonly RestHelper client = new RestHelper("https://todo.ly/api");
 
         public CommonSteps(ScenarioContext scenarioContext)
         {
