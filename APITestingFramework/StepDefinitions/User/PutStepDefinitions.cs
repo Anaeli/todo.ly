@@ -13,6 +13,7 @@ namespace Features.User.Put
     public class PutStepDefinitions : CommonSteps
     {
         private readonly ScenarioContext _scenarioContext;
+        private readonly string url = "user/0.json";
 
         public PutStepDefinitions(ScenarioContext scenarioContext) : base(scenarioContext)
         {
@@ -22,7 +23,6 @@ namespace Features.User.Put
         [When(@"the user submits a PUT request to the API endpoint with a valid JSON or XML payload")]
         public void WhentheusersubmitsaPUTrequesttotheAPIendpointwithavalidJSONorXMLpayload()
         {
-            string url = "user/0.json";
             UserPayloadModel body = new UserPayloadModel(
                 null,
                 "newPassword",
@@ -55,7 +55,6 @@ namespace Features.User.Put
 [When(@"the user submits a PUT request to the API endpoint with an invalid ""(.*)"" user email")]
 public void WhentheusersubmitsaPUTrequesttotheAPIendpointwithaninvaliduseremail(string email)
         {
-            string url = "user/0.json";
             client.AddDefaultHeader("Authorization", "Basic aW52YWxpZEBlbWFpbC5jb206UGFzc3dvcmQ=");
             client.AddDefaultHeader("Accept", "*/*");
 
@@ -94,8 +93,6 @@ public void WhentheusersubmitsaPUTrequesttotheAPIendpointwithaninvaliduseremail(
         [When(@"the user submits a PUT request to the API endpoint")]
         public void WhentheusersubmitsaPUTrequesttotheAPIendpoint()
         {
-            string url = "user/0.json";
-
             _scenarioContext["Response"] = client.Put<UserPayloadModel>(url, body: null!);
         }
 

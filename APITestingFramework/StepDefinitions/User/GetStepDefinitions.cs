@@ -11,6 +11,7 @@ namespace Features.User.Get
     public class GetStepDefinitions : CommonSteps
     {
         private readonly ScenarioContext _scenarioContext;
+        private readonly string url = "user.json";
 
         public GetStepDefinitions(ScenarioContext scenarioContext) : base(scenarioContext)
         {
@@ -20,7 +21,6 @@ namespace Features.User.Get
         [When(@"the user submits a GET request to the API endpoint with a valid user ID")]
         public void WhentheusersubmitsaGETrequesttotheAPIendpointwithavaliduserID()
         {
-            string url = "user.json";
             client.AddDefaultHeader("Authorization", _scenarioContext["Authorization"].ToString()!);
             client.AddDefaultHeader("Accept", "*/*");
 
@@ -45,7 +45,6 @@ namespace Features.User.Get
         )]
         public void WhentheusersubmitsaGETrequesttotheAPIendpointwithaninvaliduserIDintheURL()
         {
-            string url = "user.json";
             client.AddDefaultHeader("Authorization", "Basic aW52YWxpZEBlbWFpbC5jb206UGFzc3dvcmQ=");
             client.AddDefaultHeader("Accept", "*/*");
 
@@ -69,7 +68,6 @@ public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatingthattheus
         [When(@"the user submits a GET request to the API endpoint")]
         public void WhentheusersubmitsaGETrequesttotheAPIendpoint()
         {
-            string url = "user.json";
             client.AddDefaultHeader("Accept", "*/*");
 
             _scenarioContext["Response"] = client.Get(url);
