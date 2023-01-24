@@ -11,6 +11,7 @@ namespace Features.User.Post
     public class PostStepDefinitions : CommonSteps
     {
         private readonly ScenarioContext _scenarioContext;
+        private readonly string url = "user.json";
 
         public PostStepDefinitions(ScenarioContext scenarioContext) : base(scenarioContext)
         {
@@ -22,7 +23,6 @@ namespace Features.User.Post
         )]
         public void WhentheusersubmitsaPOSTrequesttotheAPIendpointwithavalidJSONorXMLpayload()
         {
-            string url = "user.json";
             UserPayloadModel body = new UserPayloadModel(
                 "molinazjd@gmail.com",
                 "password",
@@ -60,7 +60,6 @@ namespace Features.User.Post
         )]
         public void WhentheusersubmitsaPOSTrequesttotheAPIendpointwithaJSONorXMLpayloadthatismissingrequiredfields()
         {
-            string url = "user.json";
             UserPayloadModel body = new UserPayloadModel(
                 null,
                 null,
@@ -97,7 +96,6 @@ public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatingmissingfi
         )]
         public void WhentheusersubmitsaPOSTrequesttotheAPIendpointwithaJSONorXMLpayloadthathasinvaliddata()
         {
-            string url = "user.json";
             UserPayloadModel body = new UserPayloadModel(
                 "",
                 "password",
@@ -134,7 +132,6 @@ public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatinginvalidda
         )]
         public void WhentheusersubmitsaPOSTrequesttotheAPIendpointwithaJSONorXMLpayloadthathasanemailpreviouslyusedtocreateanaccount()
         {
-            string url = "user.json";
             UserPayloadModel body = new UserPayloadModel(
                 "test@gmail.com",
                 "password",
