@@ -23,8 +23,8 @@ namespace Features.User.Put
         [When(@"the user submits a PUT request to the API endpoint with a valid JSON or XML payload")]
         public void WhentheusersubmitsaPUTrequesttotheAPIendpointwithavalidJSONorXMLpayload()
         {
-            var url = "user/0.json";
-            var body = new UserPayloadModel(
+            string url = "user/0.json";
+            UserPayloadModel body = new UserPayloadModel(
                 null,
                 "newPassword",
                 null,
@@ -45,7 +45,7 @@ namespace Features.User.Put
         [Then(@"the API should return a (.*) status code and the user should be updated in the database")]
         public void ThentheAPIshouldreturnastatuscodeandtheusershouldbeupdatedinthedatabase(int args1)
         {
-            var response = (RestResponse)_scenarioContext["Response"];
+            RestResponse response = (RestResponse)_scenarioContext["Response"];
             Assert.True(response.IsSuccessful);
             Assert.Equal("OK", response.StatusCode.ToString());
             var user = JsonSerializer.Deserialize<UserPayloadModel>(response.Content!);
@@ -56,11 +56,11 @@ namespace Features.User.Put
         [When(@"the user submits a PUT request to the API endpoint with an invalid user email")]
         public void WhentheusersubmitsaPUTrequesttotheAPIendpointwithaninvaliduseremail()
         {
-            var url = "user/0.json";
+            string url = "user/0.json";
             client.AddDefaultHeader("Authorization", "Basic aW52YWxpZEBlbWFpbC5jb206UGFzc3dvcmQ=");
             client.AddDefaultHeader("Accept", "*/*");
 
-            var body = new UserPayloadModel(
+            UserPayloadModel body = new UserPayloadModel(
                 null,
                 "newPassword",
                 null,
@@ -81,7 +81,7 @@ namespace Features.User.Put
         [Then(@"the API should return a (.*) status code and an error message indicating that the user was not found")]
         public void ThentheAPIshouldreturnastatuscodeandanerrormessageindicatingthattheuserwasnotfound(int args1)
         {
-            var response = (RestResponse)_scenarioContext["Response"];
+            RestResponse response = (RestResponse)_scenarioContext["Response"];
 
             Assert.True(response.IsSuccessful);
             Assert.Equal("OK", response.StatusCode.ToString());
@@ -95,7 +95,7 @@ namespace Features.User.Put
         [When(@"the user submits a PUT request to the API endpoint")]
         public void WhentheusersubmitsaPUTrequesttotheAPIendpoint()
         {
-            var url = "user/0.json";
+            string url = "user/0.json";
 
             _scenarioContext["Response"] = client.Put<UserPayloadModel>(url, body: null!);
         }
@@ -103,7 +103,7 @@ namespace Features.User.Put
         [Then(@"the API should return a (.*) status code and an error message indicating that the user is not authorized to access the resource.")]
         public void ThentheAPIshouldreturnastatuscodeandanerrormessageindicatingthattheuserisnotauthorizedtoaccesstheresource(int args1)
         {
-            var response = (RestResponse)_scenarioContext["Response"];
+            RestResponse response = (RestResponse)_scenarioContext["Response"];
 
             Assert.True(response.IsSuccessful);
             Assert.Equal("OK", response.StatusCode.ToString());

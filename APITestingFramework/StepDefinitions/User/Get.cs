@@ -23,7 +23,7 @@ namespace Features.User.Get
         [When(@"the user submits a GET request to the API endpoint with a valid user ID")]
         public void WhentheusersubmitsaGETrequesttotheAPIendpointwithavaliduserID()
         {
-            var url = "user.json";
+            string url = "user.json";
             client.AddDefaultHeader("Authorization", _scenarioContext["Authorization"].ToString()!);
             client.AddDefaultHeader("Accept", "*/*");
 
@@ -34,7 +34,7 @@ namespace Features.User.Get
         public void ThentheAPIshouldreturnastatuscodeandtherequesteduserinJSONformat(int args1)
         {
 
-            var response = (RestResponse)_scenarioContext["Response"];
+            RestResponse response = (RestResponse)_scenarioContext["Response"];
 
             Assert.True(response.IsSuccessful);
             Assert.Equal("OK", response.StatusCode.ToString());
@@ -48,7 +48,7 @@ namespace Features.User.Get
         )]
         public void WhentheusersubmitsaGETrequesttotheAPIendpointwithaninvaliduserIDintheURL()
         {
-            var url = "user.json";
+            string url = "user.json";
             client.AddDefaultHeader("Authorization", "Basic aW52YWxpZEBlbWFpbC5jb206UGFzc3dvcmQ=");
             client.AddDefaultHeader("Accept", "*/*");
 
@@ -62,7 +62,7 @@ namespace Features.User.Get
             int args1
         )
         {
-            var response = (RestResponse)_scenarioContext["Response"];
+            RestResponse response = (RestResponse)_scenarioContext["Response"];
 
             Assert.True(response.IsSuccessful);
             Assert.Equal("OK", response.StatusCode.ToString());
@@ -76,7 +76,7 @@ namespace Features.User.Get
         [When(@"the user submits a GET request to the API endpoint")]
         public void WhentheusersubmitsaGETrequesttotheAPIendpoint()
         {
-            var url = "user.json";
+            string url = "user.json";
             client.AddDefaultHeader("Accept", "*/*");
 
             _scenarioContext["Response"] = client.Get(url);
@@ -89,7 +89,7 @@ namespace Features.User.Get
             int args1
         )
         {
-            var response = (RestResponse)_scenarioContext["Response"];
+            RestResponse response = (RestResponse)_scenarioContext["Response"];
 
             Assert.True(response.IsSuccessful);
             Assert.Equal("OK", response.StatusCode.ToString());

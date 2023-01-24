@@ -1,9 +1,5 @@
 ﻿using System.Text.Json;
-using System.Threading.Tasks;
-using Models;
 using RestSharp;
-using RestSharp.Authenticators;
-using RestSharp.Serializers.Json;
 
 namespace Core;
 
@@ -23,37 +19,37 @@ public class RestHelper
 
     public RestResponse Get(string url)
     {
-        var request = new RestRequest(url, Method.Get);
-        var res = client.Execute(request);
+        RestRequest request = new RestRequest(url, Method.Get);
+        RestResponse res = client.Execute(request);
         return res!;
     }
 
     public RestResponse Post<T>(string url, T body)
     {
-        var request = new RestRequest(url, Method.Post);
+        RestRequest request = new RestRequest(url, Method.Post);
 
-        var bodyString = JsonSerializer.Serialize<T>(body);
+        string bodyString = JsonSerializer.Serialize<T>(body);
         request.AddParameter("application/json", bodyString, ParameterType.RequestBody);
 
-        var res = client.Post(request);
+        RestResponse res = client.Post(request);
         return res;
     }
 
     public RestResponse Delete(string url)
     {
-        var request = new RestRequest(url, Method.Delete);
-        var res = client.Execute(request);
+        RestRequest request = new RestRequest(url, Method.Delete);
+        RestResponse res = client.Execute(request);
         return res!;
     }
 
     public RestResponse Put<T>(string url, T body)
     {
-        var request = new RestRequest(url, Method.Put);
+        RestRequest request = new RestRequest(url, Method.Put);
 
-        var bodyString = JsonSerializer.Serialize<T>(body);
+        string bodyString = JsonSerializer.Serialize<T>(body);
         request.AddParameter("application/json", bodyString, ParameterType.RequestBody);
 
-        var res = client.Put(request);
+        RestResponse res = client.Put(request);
         return res;
     }
 }

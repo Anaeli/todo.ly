@@ -25,8 +25,8 @@ namespace Features.User.Post
         )]
         public void WhentheusersubmitsaPOSTrequesttotheAPIendpointwithavalidJSONorXMLpayload()
         {
-            var url = "user.json";
-            var body = new UserPayloadModel(
+            string url = "user.json";
+            UserPayloadModel body = new UserPayloadModel(
                 "molinazjd@gmail.com",
                 "password",
                 "fullname",
@@ -51,7 +51,7 @@ namespace Features.User.Post
             int args1
         )
         {
-            var response = (RestResponse)_scenarioContext["Response"];
+            RestResponse response = (RestResponse)_scenarioContext["Response"];
             Assert.True(response.IsSuccessful);
             Assert.Equal("OK", response.StatusCode.ToString());
             var user = JsonSerializer.Deserialize<UserPayloadModel>(response.Content!);
@@ -63,8 +63,8 @@ namespace Features.User.Post
         )]
         public void WhentheusersubmitsaPOSTrequesttotheAPIendpointwithaJSONorXMLpayloadthatismissingrequiredfields()
         {
-            var url = "user.json";
-            var body = new UserPayloadModel(
+            string url = "user.json";
+            UserPayloadModel body = new UserPayloadModel(
                 null,
                 null,
                 null,
@@ -89,7 +89,7 @@ namespace Features.User.Post
             int args1
         )
         {
-            var response = (RestResponse)_scenarioContext["Response"];
+            RestResponse response = (RestResponse)_scenarioContext["Response"];
 
             Assert.True(response.IsSuccessful);
             Assert.Equal("OK", response.StatusCode.ToString());
@@ -104,8 +104,8 @@ namespace Features.User.Post
         )]
         public void WhentheusersubmitsaPOSTrequesttotheAPIendpointwithaJSONorXMLpayloadthathasinvaliddata()
         {
-            var url = "user.json";
-            var body = new UserPayloadModel(
+            string url = "user.json";
+            UserPayloadModel body = new UserPayloadModel(
                 "",
                 "password",
                 "fullname",
@@ -130,7 +130,7 @@ namespace Features.User.Post
             int args1
         )
         {
-            var response = (RestResponse)_scenarioContext["Response"];
+            RestResponse response = (RestResponse)_scenarioContext["Response"];
 
             Assert.True(response.IsSuccessful);
             Assert.Equal("OK", response.StatusCode.ToString());
@@ -145,8 +145,8 @@ namespace Features.User.Post
         )]
         public void WhentheusersubmitsaPOSTrequesttotheAPIendpointwithaJSONorXMLpayloadthathasanemailpreviouslyusedtocreateanaccount()
         {
-            var url = "user.json";
-            var body = new UserPayloadModel(
+            string url = "user.json";
+            UserPayloadModel body = new UserPayloadModel(
                 "test@gmail.com",
                 "password",
                 "fullname",
@@ -171,7 +171,7 @@ namespace Features.User.Post
             int args1
         )
         {
-            var response = (RestResponse)_scenarioContext["Response"];
+            RestResponse response = (RestResponse)_scenarioContext["Response"];
 
             Assert.True(response.IsSuccessful);
             Assert.Equal("OK", response.StatusCode.ToString());

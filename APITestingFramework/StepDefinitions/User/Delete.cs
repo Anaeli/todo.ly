@@ -23,7 +23,7 @@ namespace Features.User.Delete
         [When(@"the user submits a DELETE request to the API endpoint")]
         public void WhentheusersubmitsaDELETErequesttotheAPIendpoint()
         {
-            var url = "user/0.json";
+            string url = "user/0.json";
             client.AddDefaultHeader("Authorization", _scenarioContext["Authorization"].ToString()!);
             client.AddDefaultHeader("Accept", "*/*");
             _scenarioContext["Response"] = client.Delete(url);
@@ -36,7 +36,7 @@ namespace Features.User.Delete
             int args1
         )
         {
-            var response = (RestResponse)_scenarioContext["Response"];
+            RestResponse response = (RestResponse)_scenarioContext["Response"];
 
             Assert.True(response.IsSuccessful);
             Assert.Equal("OK", response.StatusCode.ToString());
@@ -51,7 +51,7 @@ namespace Features.User.Delete
             int args1
         )
         {
-            var response = (RestResponse)_scenarioContext["Response"];
+            RestResponse response = (RestResponse)_scenarioContext["Response"];
 
             Assert.True(response.IsSuccessful);
             Assert.Equal("OK", response.StatusCode.ToString());
