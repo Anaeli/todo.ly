@@ -31,15 +31,36 @@ namespace StepDefinitions.Project.Update
         [When("the user sends a PUT request for the project with ID (.*) to the API endpoint")]
         public void WhentheusersendsaPUTrequesttothehttpstodolyapiprojectsidjsonendpoint(long id)
         {
-            // ApiUrl = $"projects/{id}.json";
-            // client.AddDefaultHeader("Authorization", "Basic VmFsZXJpYS5Hb256YWxlc0BqYWxhLnVuaXZlcnNpdHk6MTIzNA==");
-            // client.AddDefaultHeader("Accept", "*/*");
+            ApiUrl = $"projects/{id}.json";
+            client.AddDefaultHeader("Authorization", "Basic VmFsZXJpYS5Hb256YWxlc0BqYWxhLnVuaXZlcnNpdHk6MTIzNA==");
+            client.AddDefaultHeader("Accept", "*/*");
 
+            ProjectRecord body = new ProjectRecord(
+                Id: null,
+                Content: "proj",
+                ItemsCount: null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+            );
             // _scenarioContext["Response"] = client.Get(ApiUrl);
-            // var response = (RestResponse)_scenarioContext["Response"];
+            _scenarioContext["Response"] = client.Put<ProjectRecord>(ApiUrl, body);
+            var response = (RestResponse)_scenarioContext["Response"];
+            Assert.Equal(response.Content, "x");
             // ProjectPayloadModel? project = JsonSerializer.Deserialize<ProjectPayloadModel>(response.Content!);
 
-                
             // _scenarioContext["Response"] = client.Put<ProjectPayloadModel>(ApiUrl, body);
             // var response = (RestResponse)_scenarioContext["Response"];
             // Assert.Equal(project!.Content , "d");

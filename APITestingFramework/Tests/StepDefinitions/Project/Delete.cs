@@ -14,7 +14,6 @@ namespace Features.Project.Delete
     {
         private readonly ScenarioContext _scenarioContext;
         private readonly RestHelper client = new RestHelper("https://todo.ly/api");
-        private ProjectPayloadModel? Project;
         private string ApiUrl = "";
         public DeleteProjectStepDefinitions(ScenarioContext scenarioContext)
         {
@@ -31,8 +30,9 @@ namespace Features.Project.Delete
             _scenarioContext["Response"] = client.Get(ApiUrl);
             var response = (RestResponse)_scenarioContext["Response"];
             Assert.True(response.IsSuccessful);
-            Project = JsonSerializer.Deserialize<ProjectPayloadModel>(response.Content!);
-            // Assert.Equal(Project!.Id, id);
+            Console.WriteLine(response.Content);
+            // var Project = JsonSerializer.Deserialize<ProjectRecord>(response.Content!.ToString());
+            // Assert.Equal(Project!.Id, 9);
         }
 
         [When("the user sends a DELETE request to the API endpoint")]
@@ -66,7 +66,7 @@ namespace Features.Project.Delete
         {
             _scenarioContext["Response"] = client.Get(ApiUrl);
             var response = (RestResponse)_scenarioContext["Response"];
-            ProjectPayloadFail? project = JsonSerializer.Deserialize<ProjectPayloadFail>(response.Content!);
+            ErrorResponseModel? project = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
             Assert.Equal(project!.ErrorCode, expectedErrorCode);
             Assert.Equal(project!.ErrorMessage, expectedErrorMessage);
         }
@@ -76,7 +76,7 @@ namespace Features.Project.Delete
         {
             _scenarioContext["Response"] = client.Delete(ApiUrl);
             var response = (RestResponse)_scenarioContext["Response"];
-            ProjectPayloadFail? project = JsonSerializer.Deserialize<ProjectPayloadFail>(response.Content!);
+            ErrorResponseModel? project = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
             Assert.Equal(project!.ErrorCode, expectedErrorCode);
             Assert.Equal(project!.ErrorMessage, expectedErrorMessage);
         }
