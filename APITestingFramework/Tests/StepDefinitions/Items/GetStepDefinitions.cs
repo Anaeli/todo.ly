@@ -29,14 +29,14 @@ namespace Features.Item.Get
             var username = _scenarioContext["username"].ToString();
             var password = _scenarioContext["password"].ToString();
             Client.AddDefaultHeader("Accept", "*/*");
-            Client.AddAuthenticator(username:username!, password:password!);
+            Client.AddAuthenticator(username: username!, password: password!);
 
             _scenarioContext["Response"] = Client.Get(url);
-            
+
         }
 
         [Then(
-            @"the API should return an ""(.*)"" status code and the list of items on the project"
+            @"the API should return an (.*) status code and the list of items on the project"
         )]
         public void ThentheAPIshouldreturnanstatuscodeandthelistofitemsontheproject(
             string statusCode

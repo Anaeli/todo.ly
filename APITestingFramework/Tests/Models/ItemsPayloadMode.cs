@@ -5,32 +5,32 @@ using System.Collections.Generic;
 
 public record ItemsPayloadModel
 {
-    public long? Id { get; set; }
-    public string? Content { get; set; }
-    public long? ItemType { get; set; }
-    public bool? Checked { get; set; }
-    public long? ProjectId { get; set; }
-    public object? ParentId { get; set; }
-    public string? Path { get; set; }
-    public bool? Collapsed { get; set; }
-    public object? DateString { get; set; }
-    public long? DateStringPriority { get; set; }
-    public string? DueDate { get; set; }
-    public object? Recurrence { get; set; }
-    public long? ItemOrder { get; set; }
-    public long? Priority { get; set; }
-    public DateTime? LastSyncedDateTime { get; set; }
-    public List<ItemsPayloadModel>? Children { get; set; }
-    public DateTime? DueDateTime { get; set; }
-    public DateTime? CreatedDate { get; set; }
-    public DateTime? LastCheckedDate { get; set; }
-    public DateTime? LastUpdatedDate { get; set; }
-    public bool? Deleted { get; set; }
-    public string? Notes { get; set; }
-    public bool? InHistory { get; set; }
-    public object? SyncClientCreationId { get; set; }
-    public DateTime? DueTimeSpecified { get; set; }
-    public long? OwnerId { get; set; }
+    public long? Id { get; set; } = null;
+    public string? Content { get; set; } = null;
+    public long? ItemType { get; set; } = null;
+    public bool? Checked { get; set; } = null;
+    public long? ProjectId { get; set; } = null;
+    public object? ParentId { get; set; } = null;
+    public string? Path { get; set; } = null;
+    public bool? Collapsed { get; set; } = null;
+    public string? DateString { get; set; } = null;
+    public int? DateStringPriority { get; set; } = null;
+    public string? DueDate { get; set; } = null;
+    public object? Recurrence { get; set; } = null;
+    public int? ItemOrder { get; set; } = null;
+    public int? Priority { get; set; } = null;
+    public string? LastSyncedDateTime { get; set; } = null;
+    public List<ItemsPayloadModel>? Children { get; set; } = null;
+    public string? DueDateTime { get; set; } = null;
+    public string? CreatedDate { get; set; } = null;
+    public string? LastCheckedDate { get; set; } = null;
+    public string? LastUpdatedDate { get; set; } = null;
+    public bool? Deleted { get; set; } = null;
+    public string? Notes { get; set; } = null;
+    public bool? InHistory { get; set; } = null;
+    public object? SyncClientCreationId { get; set; } = null;
+    public bool? DueTimeSpecified { get; set; } = null;
+    public long? OwnerId { get; set; } = null;
 
     public ItemsPayloadModel(
         long? id,
@@ -41,23 +41,23 @@ public record ItemsPayloadModel
         object? parentId,
         string? path,
         bool? collapsed,
-        object? dateString,
-        long? dateStringPriority,
+        string? dateString,
+        int? dateStringPriority,
         string? dueDate,
         object? recurrence,
-        long? itemOrder,
-        long? priority,
-        DateTime? lastSyncedDateTime,
+        int? itemOrder,
+        int? priority,
+        string? lastSyncedDateTime,
         List<ItemsPayloadModel>? children,
-        DateTime? dueDateTime,
-        DateTime? createdDate,
-        DateTime? lastCheckedDate,
-        DateTime? lastUpdatedDate,
+        string? dueDateTime,
+        string? createdDate,
+        string? lastCheckedDate,
+        string? lastUpdatedDate,
         bool? deleted,
         string? notes,
         bool? inHistory,
         object? syncClientCreationId,
-        DateTime? dueTimeSpecified,
+        bool? dueTimeSpecified,
         long? ownerId
     )
     {
@@ -89,3 +89,4 @@ public record ItemsPayloadModel
         OwnerId = ownerId;
     }
 }
+
