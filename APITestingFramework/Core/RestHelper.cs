@@ -12,9 +12,9 @@ public class RestHelper
         client = new RestClient(uri);
     }
 
-    public void AddDefaultHeader(string Key, string value)
+    public void AddDefaultHeader(string key, string value)
     {
-        client.AddDefaultHeader(Key, value);
+        client.AddDefaultHeader(key, value);
     }
 
     public RestResponse Get(string url)
@@ -31,7 +31,7 @@ public class RestHelper
         string bodyString = JsonSerializer.Serialize<T>(body);
         request.AddParameter("application/json", bodyString, ParameterType.RequestBody);
 
-        RestResponse res = client.Post(request);
+        RestResponse res = client.Execute(request);
         return res;
     }
 
@@ -49,7 +49,7 @@ public class RestHelper
         string bodyString = JsonSerializer.Serialize<T>(body);
         request.AddParameter("application/json", bodyString, ParameterType.RequestBody);
 
-        RestResponse res = client.Put(request);
+        RestResponse res = client.Execute(request);
         return res;
     }
 }

@@ -38,7 +38,7 @@ namespace Features.User.Put
                 null,
                 null
             );
-            _scenarioContext["Response"] = client.Put<UserPayloadModel>(url, body);
+            _scenarioContext["Response"] = Client.Put<UserPayloadModel>(url, body);
         }
 
         [Then(@"the API should return a (.*) status code and the user should be updated in the database")]
@@ -49,17 +49,16 @@ namespace Features.User.Put
             Assert.Equal(statusCode, response.StatusCode.ToString());
             var user = JsonSerializer.Deserialize<UserPayloadModel>(response.Content!);
             Assert.IsType<UserPayloadModel>(user);
-            // Assert.Equal("newPassword", user?.Password);
         }
 
-[When(@"the user submits a PUT request to the API endpoint with an invalid ""(.*)"" user email")]
-public void WhentheusersubmitsaPUTrequesttotheAPIendpointwithaninvaliduseremail(string email)
+        [When(@"the user submits a PUT request to the API endpoint with an invalid ""(.*)"" user email")]
+        public void WhentheusersubmitsaPUTrequesttotheAPIendpointwithaninvaliduseremail(string email)
         {
-            client.AddDefaultHeader("Authorization", "Basic aW52YWxpZEBlbWFpbC5jb206UGFzc3dvcmQ=");
-            client.AddDefaultHeader("Accept", "*/*");
+            Client.AddDefaultHeader("Authorization", "Basic aW52YWxpZEBlbWFpbC5jb206UGFzc3dvcmQ=");
+            Client.AddDefaultHeader("Accept", "*/*");
 
             UserPayloadModel body = new UserPayloadModel(
-                null,
+                email,
                 "newPassword",
                 null,
                 null,
@@ -73,7 +72,7 @@ public void WhentheusersubmitsaPUTrequesttotheAPIendpointwithaninvaliduseremail(
                 null,
                 null
             );
-            _scenarioContext["Response"] = client.Put<UserPayloadModel>(url, body);
+            _scenarioContext["Response"] = Client.Put<UserPayloadModel>(url, body);
         }
 
         [Then(@"the API should return a (.*) status code and an error message indicating that the user was not found")]
@@ -93,7 +92,7 @@ public void WhentheusersubmitsaPUTrequesttotheAPIendpointwithaninvaliduseremail(
         [When(@"the user submits a PUT request to the API endpoint")]
         public void WhentheusersubmitsaPUTrequesttotheAPIendpoint()
         {
-            _scenarioContext["Response"] = client.Put<UserPayloadModel>(url, body: null!);
+            _scenarioContext["Response"] = Client.Put<UserPayloadModel>(url, body: null!);
         }
 
         [Then(@"the API should return a (.*) status code and an error message indicating that the user is not authorized to access the resource.")]

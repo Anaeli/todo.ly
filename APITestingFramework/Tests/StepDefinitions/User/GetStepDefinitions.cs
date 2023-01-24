@@ -21,10 +21,10 @@ namespace Features.User.Get
         [When(@"the user submits a GET request to the API endpoint with a valid user ID")]
         public void WhentheusersubmitsaGETrequesttotheAPIendpointwithavaliduserID()
         {
-            client.AddDefaultHeader("Authorization", _scenarioContext["Authorization"].ToString()!);
-            client.AddDefaultHeader("Accept", "*/*");
+            Client.AddDefaultHeader("Authorization", _scenarioContext["Authorization"].ToString()!);
+            Client.AddDefaultHeader("Accept", "*/*");
 
-            _scenarioContext["Response"] = client.Get(url);
+            _scenarioContext["Response"] = Client.Get(url);
         }
 
         [Then(@"the API should return a (.*) status code and the requested user in JSON format")]
@@ -45,14 +45,14 @@ namespace Features.User.Get
         )]
         public void WhentheusersubmitsaGETrequesttotheAPIendpointwithaninvaliduserIDintheURL()
         {
-            client.AddDefaultHeader("Authorization", "Basic aW52YWxpZEBlbWFpbC5jb206UGFzc3dvcmQ=");
-            client.AddDefaultHeader("Accept", "*/*");
+            Client.AddDefaultHeader("Authorization", "Basic aW52YWxpZEBlbWFpbC5jb206UGFzc3dvcmQ=");
+            Client.AddDefaultHeader("Accept", "*/*");
 
-            _scenarioContext["Response"] = client.Get(url);
+            _scenarioContext["Response"] = Client.Get(url);
         }
 
-[Then(@"the API should return a ""(.*)"" status code and a ""(.*)"" error message indicating that the user was not found")]
-public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatingthattheuserwasnotfound(string statusCode,string errorMessage)
+        [Then(@"the API should return a ""(.*)"" status code and a ""(.*)"" error message indicating that the user was not found")]
+        public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatingthattheuserwasnotfound(string statusCode, string errorMessage)
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
 
@@ -68,13 +68,13 @@ public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatingthattheus
         [When(@"the user submits a GET request to the API endpoint")]
         public void WhentheusersubmitsaGETrequesttotheAPIendpoint()
         {
-            client.AddDefaultHeader("Accept", "*/*");
+            Client.AddDefaultHeader("Accept", "*/*");
 
-            _scenarioContext["Response"] = client.Get(url);
+            _scenarioContext["Response"] = Client.Get(url);
         }
 
-[Then(@"the API should return a ""(.*)"" status code and a ""(.*)"" error message indicating that the user is not authorized to access the resource.")]
-public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatingthattheuserisnotauthorizedtoaccesstheresource(string statusCode,string errorMessage)
+        [Then(@"the API should return a ""(.*)"" status code and a ""(.*)"" error message indicating that the user is not authorized to access the resource.")]
+        public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatingthattheuserisnotauthorizedtoaccesstheresource(string statusCode, string errorMessage)
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
 

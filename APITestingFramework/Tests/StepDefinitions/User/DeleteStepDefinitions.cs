@@ -23,9 +23,9 @@ namespace Features.User.Delete
         public void WhentheusersubmitsaDELETErequesttotheAPIendpoint()
         {
             string url = "user/0.json";
-            client.AddDefaultHeader("Authorization", _scenarioContext["Authorization"].ToString()!);
-            client.AddDefaultHeader("Accept", "*/*");
-            _scenarioContext["Response"] = client.Delete(url);
+            Client.AddDefaultHeader("Authorization", _scenarioContext["Authorization"].ToString()!);
+            Client.AddDefaultHeader("Accept", "*/*");
+            _scenarioContext["Response"] = Client.Delete(url);
         }
 
         [Then(
@@ -43,8 +43,8 @@ namespace Features.User.Delete
             Assert.IsType<UserPayloadModel>(user);
         }
 
-[Then(@"the API should return a ""(.*)"" status code and a ""(.*)"" error message indicating that the user is not authorized to access the resource.")]
-public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatingthattheuserisnotauthorizedtoaccesstheresource(string statusCode, string errorMessage)
+        [Then(@"the API should return a ""(.*)"" status code and a ""(.*)"" error message indicating that the user is not authorized to access the resource.")]
+        public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatingthattheuserisnotauthorizedtoaccesstheresource(string statusCode, string errorMessage)
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
 

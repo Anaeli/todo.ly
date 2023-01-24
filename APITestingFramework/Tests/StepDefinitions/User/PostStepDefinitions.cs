@@ -38,7 +38,7 @@ namespace Features.User.Post
                 null,
                 null
             );
-            _scenarioContext["Response"] = client.Post<UserPayloadModel>(url, body);
+            _scenarioContext["Response"] = Client.Post<UserPayloadModel>(url, body);
         }
 
         [Then(
@@ -75,11 +75,11 @@ namespace Features.User.Post
                 null,
                 null
             );
-            _scenarioContext["Response"] = client.Post<UserPayloadModel>(url, body);
+            _scenarioContext["Response"] = Client.Post<UserPayloadModel>(url, body);
         }
 
-[Then(@"the API should return a ""(.*)"" status code and a ""(.*)"" error message indicating missing fields")]
-public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatingmissingfields(string statusCode,string errorMessage)
+        [Then(@"the API should return a ""(.*)"" status code and a ""(.*)"" error message indicating missing fields")]
+        public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatingmissingfields(string statusCode, string errorMessage)
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
 
@@ -111,11 +111,11 @@ public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatingmissingfi
                 null,
                 null
             );
-            _scenarioContext["Response"] = client.Post<UserPayloadModel>(url, body);
+            _scenarioContext["Response"] = Client.Post<UserPayloadModel>(url, body);
         }
 
-[Then(@"the API should return a ""(.*)"" status code and a ""(.*)"" error message indicating invalid data")]
-public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatinginvaliddata(string statusCode,string errorMessage)
+        [Then(@"the API should return a ""(.*)"" status code and a ""(.*)"" error message indicating invalid data")]
+        public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatinginvaliddata(string statusCode, string errorMessage)
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
 
@@ -147,11 +147,11 @@ public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatinginvalidda
                 null,
                 null
             );
-            _scenarioContext["Response"] = client.Post<UserPayloadModel>(url, body);
+            _scenarioContext["Response"] = Client.Post<UserPayloadModel>(url, body);
         }
 
-[Then(@"the API should return a ""(.*)"" status code and a ""(.*)"" error message indicating the email already exists")]
-public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatingtheemailalreadyexists(string statusCode,string errorMessage)
+        [Then(@"the API should return a ""(.*)"" status code and a ""(.*)"" error message indicating the email already exists")]
+        public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatingtheemailalreadyexists(string statusCode, string errorMessage)
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
 
