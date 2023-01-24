@@ -12,17 +12,17 @@ namespace Features.GeneralSteps
 
         public CommonSteps(ScenarioContext scenarioContext)
         {
+            DotNetEnv.Env.TraversePath().Load();
             _scenarioContext = scenarioContext;
         }
 
         [Given(@"the user is authenticated")]
         public void Giventheuserisauthenticated()
         {
-            _scenarioContext["Authorization"] = "Basic amdpb2ZmcmVAaG90bWFpbC5jb206UGFzc3dvcmQ=";
-            // DotNetEnv.Env.Load();
-            // _scenarioContext["Authorization"] = Environment.GetEnvironmentVariable("AUTHORIZATION");
+            _scenarioContext["Authorization"] = System.Environment.GetEnvironmentVariable(
+                "AUTHORIZATION"
+            );
         }
-
 
         [Given(@"the user is not authenticated")]
         public void Giventheuserinotsauthenticated()
