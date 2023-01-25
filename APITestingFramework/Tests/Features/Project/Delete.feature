@@ -9,7 +9,7 @@ Scenario Outline: User deletes a project
 
 Examples:
 |  ID     |
-| 4054427 |
+| 4055227 |
 
 @negative
 Scenario Outline: Attempt to delete an non-existent project

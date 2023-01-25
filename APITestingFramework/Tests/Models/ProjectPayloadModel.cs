@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 public record ProjectPayloadModel
 {
-    public int? Id { get; set; } = null;
+    public int? Id { get; set; }
     public string? Content { get; set; }
     public int? ItemsCount { get; set; }
     public int? Icon { get; set; }

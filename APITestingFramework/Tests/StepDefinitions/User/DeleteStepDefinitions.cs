@@ -4,6 +4,7 @@ using Core;
 using Features.GeneralSteps;
 using Models;
 using RestSharp;
+using RestSharp.Authenticators;
 using TechTalk.SpecFlow;
 
 namespace Features.User.Delete
@@ -19,21 +20,22 @@ namespace Features.User.Delete
             _scenarioContext = scenarioContext;
         }
 
-        [When(@"the user submits a DELETE request to the API endpoint")]
-        public void WhentheusersubmitsaDELETErequesttotheAPIendpoint()
+        [When(@"the user submits a POST request to ""(.*)"" with a valid JSON body")]
+        public void WhentheusersubmitsaPOSTrequesttowithavalidJSONbody(string url, string body)
         {
-            string url = "user/0.json";
-            Client.AddDefaultHeader("Authorization", _scenarioContext["Authorization"].ToString()!);
-            Client.AddDefaultHeader("Accept", "*/*");
-            _scenarioContext["Response"] = Client.Delete(url);
+            UserPayloadModel? user = Newtonsoft.Json.JsonConvert.DeserializeObject<UserPayloadModel>(body);
+            _scenarioContext["Response"] = Client.Post<UserPayloadModel>(url, user);
         }
 
-        [Then(
-            @"the API should return a (.*) status code and the user should be removed from the database"
-        )]
-        public void ThentheAPIshouldreturnastatuscodeandtheusershouldberemovedfromthedatabase(
-            string statusCode
-        )
+        [When(@"the user submits a DELETE request to ""(.*)"" to delete his account")]
+        public void GiventheusersubmitsaDELETErequesttotodeletehisaccount(string url)
+        {
+            Client.Authenticate("deleteUser@email.com", "password");
+            Client.Delete(url);
+        }
+
+        [Then(@"the API should return a ""(.*)"" status code and the deleted user information in JSON format")]
+        public void ThentheAPIshouldreturnastatuscodeandthedeleteduserinformationinJSONformat(string statusCode)
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
 
@@ -41,19 +43,28 @@ namespace Features.User.Delete
             Assert.Equal(statusCode, response.StatusCode.ToString());
             var user = JsonSerializer.Deserialize<UserPayloadModel>(response.Content!);
             Assert.IsType<UserPayloadModel>(user);
+            Assert.Equal("deleteUser@email.com", user.Email);
         }
 
-        [Then(@"the API should return a ""(.*)"" status code and a ""(.*)"" error message indicating that the user is not authorized to access the resource.")]
-        public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatingthattheuserisnotauthorizedtoaccesstheresource(string statusCode, string errorMessage)
+        [When(@"the user submits a DELETE request to ""(.*)""")]
+        public void WhentheusersubmitsaDELETErequestto(string url)
         {
-            RestResponse response = (RestResponse)_scenarioContext["Response"];
+            Client.AddDefaultHeader("Authorization", _scenarioContext["Authorization"].ToString()!);
+            Client.AddDefaultHeader("Accept", "*/*");
+            _scenarioContext["Response"] = Client.Delete(url);
+        }
 
-            Assert.True(response.IsSuccessful);
-            Assert.Equal(statusCode, response.StatusCode.ToString());
-            var res = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
-            Assert.IsType<ErrorResponseModel>(res);
-            Assert.Equal(errorMessage, res!.ErrorMessage);
-            Assert.Equal(102, res!.ErrorCode);
+        [Then(@"the API should return a ""(.*)"" response with a (.*) status code and a ""(.*)"" error message indicating that the user is not authorized to access the resource.")]
+        public void ThentheAPIshouldreturnaresponsewithastatuscodeandaerrormessageindicatingthattheuserisnotauthorizedtoaccesstheresource(string response, int statusCode, string message)
+        {
+            RestResponse res = (RestResponse)_scenarioContext["Response"];
+
+            Assert.True(res.IsSuccessful);
+            Assert.Equal(response, res.StatusCode.ToString());
+            var error = JsonSerializer.Deserialize<ErrorResponseModel>(res.Content!);
+            Assert.IsType<ErrorResponseModel>(error);
+            Assert.Equal(message, error!.ErrorMessage);
+            Assert.Equal(statusCode, error!.ErrorCode);
         }
     }
 }

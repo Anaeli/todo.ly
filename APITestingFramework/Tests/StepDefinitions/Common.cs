@@ -16,6 +16,14 @@ namespace Features.GeneralSteps
             _scenarioContext = scenarioContext;
         }
 
+        [Given(@"the user has a valid authentication")]
+        public void Giventheuserhasavalidauthentication()
+        {
+            _scenarioContext["Authorization"] = System.Environment.GetEnvironmentVariable(
+                "VALID_AUTHORIZATION"
+            );
+        }
+
         [Given(@"the user is authenticated")]
         public void Giventheuserisauthenticated()
         {
@@ -23,18 +31,17 @@ namespace Features.GeneralSteps
                 "AUTHORIZATION"
             );
         }
-
-        [Given(@"the user is not authenticated")]
-        public void Giventheuserinotsauthenticated()
-        {
-            _scenarioContext["Authorization"] = "";
-        }
-
         [Given(@"the user is authenticated with ""(.*)"" and ""(.*)""")]
         public void Giventheuserisauthenticatedwithusernameandpassword(string username, string password)
         {
             _scenarioContext["username"] = username;
             _scenarioContext["password"] = password;
+        }
+
+        [Given(@"the user is not authenticated")]
+        public void Giventheuserinotsauthenticated()
+        {
+            _scenarioContext["Authorization"] = "";
         }
     }
 }
