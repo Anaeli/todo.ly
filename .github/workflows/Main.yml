@@ -1,5 +1,4 @@
-name: King of Tokyo
-
+name: Todo.ly
 on:
   push:
     branches: [ '**' ]
@@ -17,31 +16,22 @@ jobs:
           dotnet-version: '6.0.x'
       - name: Install tools
         run: dotnet tool install --global SpecFlow.Plus.LivingDoc.CLI
-      #- name: Restore tools
-      #  run: dotnet tool restore --tool-manifest KOF/.config/dotnet-tools.json
       - name: Build
         run: dotnet build APITestingFramework/
       - name: Check format issues
         run: dotnet format --verify-no-changes -v d APITestingFramework/
       - name: Run tests
-        #run: dotnet test APITestingFramework/ -l html --collect:"XPlat Code Coverage" --results-directory "TestResults-${{ matrix.dotnet-version }}"
-        run: dotnet test APITestingFramework/
+        run: dotnet test APITestingFramework/ --logger "trx;LogFileName=${{ github.run_number }}.trx"         
 
       - name: Create Livingdoc reports
         run: livingdoc feature-folder APITestingFramework/ -t APITestingFramework/ReportOutputs/TestExecution.json
-      - name: Upload test results
+      - name: Upload LivingDoc report file
         uses: actions/upload-artifact@v3
         with:
-          name: LivingDoc.html
+          name: Run#${{ github.run_number }}_LivingDoc.html
           path: LivingDoc.html
-          #Use always() to always run this step to publish test results when there are test failures
-        #if: ${{ always() }}
-      #- name: Generate code coverage report
-      #  run: cd KOF/; dotnet reportgenerator -reports:"../TestResults-${{ matrix.dotnet-version }}/**/*.cobertura.xml" -targetdir:".coveragereport"
-      #- name: Upload code coverage report
-      #  uses: actions/upload-artifact@v3
-      #  with:
-      #    name: code-coverage-${{ matrix.dotnet-version }}
-      #    path: KOF/.coveragereport
-        # Use always() to always run this step to publish test results when there are test failures
-      #  if: ${{ always() }}
+      - name: Upload .trx report file
+        uses: actions/upload-artifact@v3
+        with:
+          name: Run#${{ github.run_number }}_report.trx
+          path: APITestingFramework/TestResults/${{ github.run_number }}.trx
