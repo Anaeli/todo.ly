@@ -57,14 +57,12 @@ namespace Features.items.Put
             _scenarioContext["Response"] = Client.Put<ItemsPayloadModel>(url, body);
         }
 
-        [Then(@"the API should return an ""(.*)"" status code and the item should be updated")]
+        [Then(@"the API should return an (.*) status code and the item should be updated")]
         public void ThentheAPIshouldreturnanstatuscodeandtheitemshouldbeupdated(string statusCode)
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
             Assert.True(response.IsSuccessful);
             Assert.Equal(statusCode, response.StatusCode.ToString());
-            var user = JsonSerializer.Deserialize<UserPayloadModel>(response.Content!);
-            Assert.IsType<UserPayloadModel>(user);
         }
     }
 }

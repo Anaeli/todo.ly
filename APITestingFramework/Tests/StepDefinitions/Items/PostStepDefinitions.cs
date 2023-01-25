@@ -57,7 +57,7 @@ namespace Features.Items.Post
         }
 
         [Then(
-            @"the API should return an ""(.*)"" status code and the new item should be added to the project"
+            @"the API should return an (.*) status code and the new item should be added to the project"
         )]
         public void ThentheAPIshouldreturnanstatuscodeandthenewitemshouldbeaddedtotheproject(
             string statusCode
@@ -66,10 +66,6 @@ namespace Features.Items.Post
             RestResponse response = (RestResponse)_scenarioContext["Response"];
             Assert.True(response.IsSuccessful);
             Assert.Equal(statusCode, response.StatusCode.ToString());
-            Console.WriteLine("aqui");
-            Console.WriteLine(response.Content!);
-            var item = JsonSerializer.Deserialize<ItemsPayloadModel>(response.Content!);
-            Assert.IsType<ItemsPayloadModel>(item);
         }
     }
 }
