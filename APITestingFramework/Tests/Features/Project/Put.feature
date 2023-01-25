@@ -1,13 +1,22 @@
 Feature: Update a Project by ID
 
-Scenario: User updates a project's information 
-    Given the user is authenticated
-    When the user sends a PUT request for the project with ID 4054352 to the API endpoint 
-    Then includes the updated project content, items count, icon, item type, parent id, collapsed, and item order in the request body 
-    Then the project's information should be updated in the projects 
-    Then the user should receive a response with the updated project's information
+@acceptance
+Scenario Outline: User updates a project's information 
+    Given the user is authenticated with "Valeria.Gonzales@jala.university" and "1234"
+    When the user has a valid project "<ID>" and submits a PUT request to the API endpoint
+    Then the API should return a OK status code and the project should be updated in the database
 
-  
-  
-  
+Examples:
+|  ID     |
+| 4054352 |
+
+@negative  
+Scenario Outline: Update a user with invalid user credentials
+    Given the user is authenticated with "Valeria.Gonzales@jala.university" and "1234"
+    When the user has a invalid project "<ID>" and submits a PUT request to the API endpoint
+    Then the API should return a "OK" status code and an no JSON file
+
+ Examples:
+|  ID   |
+| 12345 | 
   

@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using RestSharp;
+using RestSharp.Authenticators;
 
 namespace Core;
 
@@ -16,7 +17,10 @@ public class RestHelper
     {
         client.AddDefaultHeader(key, value);
     }
-
+    public void AddAuthenticator(string username, string password)
+    {
+        client.Authenticator = new HttpBasicAuthenticator(username, password);
+    }
     public RestResponse Get(string url)
     {
         RestRequest request = new RestRequest(url, Method.Get);

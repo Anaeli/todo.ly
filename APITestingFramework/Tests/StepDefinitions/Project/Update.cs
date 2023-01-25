@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.Json;
 using Core;
+using Features.GeneralSteps;
 // using Features.GeneralSteps;
 using Models;
 using RestSharp;
@@ -10,79 +11,76 @@ namespace StepDefinitions.Project.Update
 {
     [Binding]
     [Scope(Feature = "Update a Project by ID")]
-    public class StepDefinitionsUpdate
+    public class StepDefinitionsUpdate : CommonSteps
     {
         private readonly ScenarioContext _scenarioContext;
-        private readonly RestHelper client = new RestHelper("https://todo.ly/api");
-        private readonly ProjectObject? Project;
         private string ApiUrl = "";
 
-        public StepDefinitionsUpdate(ScenarioContext scenarioContext)
+        public StepDefinitionsUpdate(ScenarioContext scenarioContext) : base(scenarioContext)
         {
             _scenarioContext = scenarioContext;
         }
 
-        [Given("the user is authenticated")]
-        public void Giventheuserisauthenticatedinpagetoupdatetheprojects()
+        [When(@"the user has a valid project ""(.*)"" and submits a PUT request to the API endpoint")]
+        public void WhentheuserhasavalidprojectIDandsubmitsaPUTrequesttotheAPIendpoint(int expectedId)
         {
-            //COMMON
-        }
+            ApiUrl = $"projects/{expectedId}.json";
+            var username = _scenarioContext["username"].ToString();
+            var password = _scenarioContext["password"].ToString();
+            Client.AddDefaultHeader("Accept", "*/*");
+            Client.AddAuthenticator(username: username!, password: password!);
 
-        [When("the user sends a PUT request for the project with ID (.*) to the API endpoint")]
-        public void WhentheusersendsaPUTrequesttothehttpstodolyapiprojectsidjsonendpoint(long id)
-        {
-            ApiUrl = $"projects/{id}.json";
-            client.AddDefaultHeader("Authorization", "Basic VmFsZXJpYS5Hb256YWxlc0BqYWxhLnVuaXZlcnNpdHk6MTIzNA==");
-            client.AddDefaultHeader("Accept", "*/*");
-
-            ProjectRecord body = new ProjectRecord(
-                Id: null,
-                Content: "proj",
-                ItemsCount: null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
+            ProjectPayloadModel body = new ProjectPayloadModel(
+                id: expectedId,
+                content: "New Content Name",
+                itemOrder: 4
             );
-            // _scenarioContext["Response"] = client.Get(ApiUrl);
-            _scenarioContext["Response"] = client.Put<ProjectRecord>(ApiUrl, body);
-            var response = (RestResponse)_scenarioContext["Response"];
-            Assert.Equal(response.Content, "x");
-            // ProjectPayloadModel? project = JsonSerializer.Deserialize<ProjectPayloadModel>(response.Content!);
 
-            // _scenarioContext["Response"] = client.Put<ProjectPayloadModel>(ApiUrl, body);
-            // var response = (RestResponse)_scenarioContext["Response"];
-            // Assert.Equal(project!.Content , "d");
-            // _scenarioContext.Pending();
+            _scenarioContext["Response"] = Client.Put<ProjectPayloadModel>(ApiUrl, body);
         }
 
-        [Then("includes the updated project content, items count, icon, item type, parent id, collapsed, and item order in the request body")]
-        public void Thenincludestheupdatedprojectcontentitemscounticonitemtypeparentidcollapsedanditemorderintherequestbody()
+        [Then(
+            "the API should return a (.*) status code and the project should be updated in the database"
+        )]
+        public void Thenincludestheupdatedprojectcontentitemscounticonitemtypeparentidcollapsedanditemorderintherequestbody(string expectedCode)
         {
-            // _scenarioContext.Pending();
+            RestResponse response = (RestResponse)_scenarioContext["Response"];
+            Assert.True(response.IsSuccessful);
+            Assert.Equal(expectedCode, response.StatusCode.ToString());
+            var project = JsonSerializer.Deserialize<ProjectPayloadModel>(response.Content!);
+            Assert.IsType<ProjectPayloadModel>(project);
+
         }
 
-        [Then("the project's information should be updated in the projects")]
-        public void Thentheprojectsinformationshouldbeupdatedintheprojects()
+        [When(
+            @"the user has a invalid project ""(.*)"" and submits a PUT request to the API endpoint"
+        )]
+        public void ThentheuserhasainvalidprojectIDandsubmitsaPUTrequesttotheAPIendpoint(int expectedID)
         {
-            // _scenarioContext.Pending();
+            ApiUrl = $"projects/{expectedID}.json";
+            var username = _scenarioContext["username"].ToString();
+            var password = _scenarioContext["password"].ToString();
+            Client.AddDefaultHeader("Accept", "*/*");
+            Client.AddAuthenticator(username: username!, password: password!);
+
+            ProjectPayloadModel body = new ProjectPayloadModel(
+                id: expectedID,
+                content: "New Content",
+                itemOrder: 4
+            );
+            _scenarioContext["Response"] = Client.Put<ProjectPayloadModel>(ApiUrl, body);
         }
 
-        [Then("the user should receive a response with the updated project's information")]
-        public void Thentheusershouldreceivea()
+        [Then(
+            @"the API should return a ""(.*)"" status code and an no JSON file"
+        )]
+        public void ThentheAPIshouldreturnaOKstatuscodeandanemptyJSON(string expectedCode)
         {
-            // _scenarioContext.Pending();
+            RestResponse response = (RestResponse)_scenarioContext["Response"];
+
+            Assert.True(response.IsSuccessful);
+            Assert.Equal(expectedCode, response.StatusCode.ToString());
+            Assert.Empty(response.Content!);
         }
     }
 }
