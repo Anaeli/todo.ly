@@ -24,13 +24,16 @@ jobs:
         run: dotnet test APITestingFramework/ --logger "trx;LogFileName=${{ github.run_number }}.trx"         
 
       - name: Create Livingdoc reports
+        if: always()
         run: livingdoc feature-folder APITestingFramework/ -t APITestingFramework/ReportOutputs/TestExecution.json
       - name: Upload LivingDoc report file
+        if: always()
         uses: actions/upload-artifact@v3
         with:
           name: Run#${{ github.run_number }}_LivingDoc.html
           path: LivingDoc.html
       - name: Upload .trx report file
+        if: always()
         uses: actions/upload-artifact@v3
         with:
           name: Run#${{ github.run_number }}_report.trx
