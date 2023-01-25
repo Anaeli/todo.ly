@@ -23,6 +23,12 @@ namespace Features.GeneralSteps
                 "AUTHORIZATION"
             );
         }
+        [Given(@"the user is authenticated with ""(.*)"" and ""(.*)""")]
+        public void Giventheuserisauthenticatedwithusernameandpassword(string username, string password)
+        {
+            _scenarioContext["username"] = username;
+            _scenarioContext["password"] = password;
+        }
 
         [Given(@"the user is not authenticated")]
         public void Giventheuserinotsauthenticated()
