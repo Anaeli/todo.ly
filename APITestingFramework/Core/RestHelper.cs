@@ -20,7 +20,6 @@ public class RestHelper
     {
         client.Authenticator = new HttpBasicAuthenticator(username, password);
     }
-
     public RestResponse Get(string url)
     {
         RestRequest request = new RestRequest(url, Method.Get);
