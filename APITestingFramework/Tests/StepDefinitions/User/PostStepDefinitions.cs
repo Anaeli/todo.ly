@@ -2,6 +2,7 @@
 using Features.GeneralSteps;
 using Models;
 using RestSharp;
+using RestSharp.Authenticators;
 using TechTalk.SpecFlow;
 
 namespace Features.User.Post
@@ -11,156 +12,98 @@ namespace Features.User.Post
     public class PostStepDefinitions : CommonSteps
     {
         private readonly ScenarioContext _scenarioContext;
-        private readonly string url = "user.json";
 
         public PostStepDefinitions(ScenarioContext scenarioContext) : base(scenarioContext)
         {
             _scenarioContext = scenarioContext;
         }
 
-        [When(
-            @"the user submits a POST request to the API endpoint with a valid JSON or XML payload"
-        )]
-        public void WhentheusersubmitsaPOSTrequesttotheAPIendpointwithavalidJSONorXMLpayload()
+        [When(@"the user submits a POST request to ""(.*)"" with a valid JSON body")]
+        public void WhentheusersubmitsaPOSTrequesttowithavalidJSONbody(string url, string body)
         {
-            UserPayloadModel body = new UserPayloadModel(
-                "molinazjd@gmail.com",
-                "password",
-                "fullname",
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-            );
-            _scenarioContext["Response"] = Client.Post<UserPayloadModel>(url, body);
+            UserPayloadModel? user = Newtonsoft.Json.JsonConvert.DeserializeObject<UserPayloadModel>(body);
+            _scenarioContext["Response"] = Client.Post<UserPayloadModel>(url, user);
         }
 
-        [Then(
-            @"the API should return a (.*) status code and the new user should be added to the database"
-        )]
-        public void ThentheAPIshouldreturnastatuscodeandthenewusershouldbeaddedtothedatabase(
-            string statusCode
-        )
+        [Then(@"the API should return a ""(.*)"" status code and the new user information in JSON format")]
+        public void ThentheAPIshouldreturnastatuscodeandthenewuserinformationinJSONformat(string statusCode)
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
             Assert.True(response.IsSuccessful);
             Assert.Equal(statusCode, response.StatusCode.ToString());
             var user = JsonSerializer.Deserialize<UserPayloadModel>(response.Content!);
             Assert.IsType<UserPayloadModel>(user);
+            Assert.Equal("newUser@email.com", user.Email);
         }
 
-        [When(
-            @"the user submits a POST request to the API endpoint with a JSON or XML payload that is missing required fields"
-        )]
-        public void WhentheusersubmitsaPOSTrequesttotheAPIendpointwithaJSONorXMLpayloadthatismissingrequiredfields()
+        [AfterScenario]
+        public void DeleteUser()
         {
-            UserPayloadModel body = new UserPayloadModel(
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-            );
-            _scenarioContext["Response"] = Client.Post<UserPayloadModel>(url, body);
+            RestClient client = new RestClient("https://todo.ly/api");
+            client.Authenticator = new HttpBasicAuthenticator("newUser@email.com", "password");
+
+            RestRequest request = new RestRequest("user/0.json", Method.Delete);
+            client.Execute(request);
         }
 
-        [Then(@"the API should return a ""(.*)"" status code and a ""(.*)"" error message indicating missing fields")]
-        public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatingmissingfields(string statusCode, string errorMessage)
+        [When(@"the user submits a POST request to ""(.*)"" with a JSON body that is missing email required fields")]
+        public void WhentheusersubmitsaPOSTrequesttowithaJSONbodythatismissingemailrequiredfields(string url, string body)
         {
-            RestResponse response = (RestResponse)_scenarioContext["Response"];
-
-            Assert.True(response.IsSuccessful);
-            Assert.Equal(statusCode, response.StatusCode.ToString());
-            var res = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
-            Assert.IsType<ErrorResponseModel>(res);
-            Assert.Equal(errorMessage, res!.ErrorMessage);
-            Assert.Equal(307, res!.ErrorCode);
+            UserPayloadModel? user = Newtonsoft.Json.JsonConvert.DeserializeObject<UserPayloadModel>(body);
+            _scenarioContext["Response"] = Client.Post<UserPayloadModel>(url, user);
         }
 
-        [When(
-            @"the user submits a POST request to the API endpoint with a JSON or XML payload that has invalid data"
-        )]
-        public void WhentheusersubmitsaPOSTrequesttotheAPIendpointwithaJSONorXMLpayloadthathasinvaliddata()
+        [Then(@"the API should return a ""(.*)"" response with a (.*) status code and a ""(.*)"" error message indicating missing fields")]
+        public void ThentheAPIshouldreturnaresponsewithastatuscodeandaerrormessageindicatingmissingfields(string response, int statusCode, string message)
         {
-            UserPayloadModel body = new UserPayloadModel(
-                "",
-                "password",
-                "fullname",
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-            );
-            _scenarioContext["Response"] = Client.Post<UserPayloadModel>(url, body);
+            RestResponse res = (RestResponse)_scenarioContext["Response"];
+
+            Assert.True(res.IsSuccessful);
+            Assert.Equal(response, res.StatusCode.ToString());
+            var error = JsonSerializer.Deserialize<ErrorResponseModel>(res.Content!);
+            Assert.IsType<ErrorResponseModel>(error);
+            Assert.Equal(message, error!.ErrorMessage);
+            Assert.Equal(statusCode, error!.ErrorCode);
         }
 
-        [Then(@"the API should return a ""(.*)"" status code and a ""(.*)"" error message indicating invalid data")]
-        public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatinginvaliddata(string statusCode, string errorMessage)
+        [When(@"the user submits a POST request to ""(.*)"" with a JSON body that has an invalid email")]
+        public void WhentheusersubmitsaPOSTrequesttowithaJSONbodythathasaninvalidemail(string url, string body)
         {
-            RestResponse response = (RestResponse)_scenarioContext["Response"];
-
-            Assert.True(response.IsSuccessful);
-            Assert.Equal(statusCode, response.StatusCode.ToString());
-            var res = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
-            Assert.IsType<ErrorResponseModel>(res);
-            Assert.Equal(errorMessage, res!.ErrorMessage);
-            Assert.Equal(307, res!.ErrorCode);
+            UserPayloadModel? user = Newtonsoft.Json.JsonConvert.DeserializeObject<UserPayloadModel>(body);
+            _scenarioContext["Response"] = Client.Post<UserPayloadModel>(url, user);
         }
 
-        [When(
-            @"the user submits a POST request to the API endpoint with a JSON or XML payload that has an email previously used to create an account"
-        )]
-        public void WhentheusersubmitsaPOSTrequesttotheAPIendpointwithaJSONorXMLpayloadthathasanemailpreviouslyusedtocreateanaccount()
+        [Then(@"the API should return a ""(.*)"" response with a (.*) status code and a ""(.*)"" error message indicating invalid data")]
+        public void ThentheAPIshouldreturnaresponsewithastatuscodeandaerrormessageindicatinginvaliddata(string response, int statusCode, string message)
         {
-            UserPayloadModel body = new UserPayloadModel(
-                "test@gmail.com",
-                "password",
-                "fullname",
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
-            );
-            _scenarioContext["Response"] = Client.Post<UserPayloadModel>(url, body);
+            RestResponse res = (RestResponse)_scenarioContext["Response"];
+
+            Assert.True(res.IsSuccessful);
+            Assert.Equal(response, res.StatusCode.ToString());
+            var error = JsonSerializer.Deserialize<ErrorResponseModel>(res.Content!);
+            Assert.IsType<ErrorResponseModel>(error);
+            Assert.Equal(message, error!.ErrorMessage);
+            Assert.Equal(statusCode, error!.ErrorCode);
         }
 
-        [Then(@"the API should return a ""(.*)"" status code and a ""(.*)"" error message indicating the email already exists")]
-        public void ThentheAPIshouldreturnastatuscodeandaerrormessageindicatingtheemailalreadyexists(string statusCode, string errorMessage)
+        [When(@"the user submits a POST request to ""(.*)"" with a JSON body that has an email previously used to create an account")]
+        public void WhentheusersubmitsaPOSTrequesttowithaJSONbodythathasanemailpreviouslyusedtocreateanaccount(string url, string body)
         {
-            RestResponse response = (RestResponse)_scenarioContext["Response"];
+            UserPayloadModel? user = Newtonsoft.Json.JsonConvert.DeserializeObject<UserPayloadModel>(body);
+            _scenarioContext["Response"] = Client.Post<UserPayloadModel>(url, user);
+        }
 
-            Assert.True(response.IsSuccessful);
-            Assert.Equal(statusCode, response.StatusCode.ToString());
-            var res = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
-            Assert.IsType<ErrorResponseModel>(res);
-            Assert.Equal(errorMessage, res!.ErrorMessage);
-            Assert.Equal(201, res!.ErrorCode);
+        [Then(@"the API should return a ""(.*)"" response with a (.*) status code and a ""(.*)"" error message indicating the email already exists")]
+        public void ThentheAPIshouldreturnaresponsewithastatuscodeandaerrormessageindicatingtheemailalreadyexists(string response, int statusCode, string message)
+        {
+            RestResponse res = (RestResponse)_scenarioContext["Response"];
+
+            Assert.True(res.IsSuccessful);
+            Assert.Equal(response, res.StatusCode.ToString());
+            var error = JsonSerializer.Deserialize<ErrorResponseModel>(res.Content!);
+            Assert.IsType<ErrorResponseModel>(error);
+            Assert.Equal(message, error!.ErrorMessage);
+            Assert.Equal(statusCode, error!.ErrorCode);
         }
     }
 }

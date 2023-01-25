@@ -7,7 +7,6 @@ namespace Core;
 public class RestHelper
 {
     private readonly RestClient client;
-
     public RestHelper(string uri)
     {
         client = new RestClient(uri);
@@ -56,5 +55,10 @@ public class RestHelper
 
         RestResponse res = client.Execute(request);
         return res;
+    }
+
+    public void Authenticate(string username, string password)
+    {
+        client.Authenticator = new HttpBasicAuthenticator(username, password);
     }
 }
