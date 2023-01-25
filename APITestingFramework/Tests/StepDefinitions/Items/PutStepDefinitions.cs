@@ -6,7 +6,7 @@ using Models;
 using RestSharp;
 using TechTalk.SpecFlow;
 
-namespace Features.items.Put
+namespace Features.Items.Put
 {
     [Binding]
     [Scope(Feature = "Update an existing item to be done")]
