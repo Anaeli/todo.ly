@@ -1,10 +1,10 @@
+﻿using System.Collections.Generic;
 using System.Text.Json;
 using Features.GeneralSteps;
 using Models;
 using RestSharp;
-using TechTalk.SpecFlow;
 using RestSharp.Authenticators;
-using System.Collections.Generic;
+using TechTalk.SpecFlow;
 
 namespace Features.Item.Get
 {
