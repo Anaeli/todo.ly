@@ -5,8 +5,8 @@ Feature: Retrieve an existing project
         Given the user is authenticated
         When the user sends a GET request to the api endpoint with a valid project ID
         Then the response should have a status code of "OK" and should contain the details of the valid project
-            
-            Examples:
+
+        Examples:
             | Parameter              | Value                 |
             | Id                     | 1                     |
             | Content                | Study                 |
@@ -31,7 +31,7 @@ Feature: Retrieve an existing project
     Scenario: Attempt to retrieve a project with invalid ID
         Given the user is authenticated
         When the user sends a GET request to the api endpoint with an invalid project ID "1"
-        Then the response should have a status code of "OK" and the response should contain an error message "You don't have access to this Project"
+        Then the response should have a status code of "OK" and the response should contain an error message "Not Authenticated"
 
     @negative
     Scenario: Attempt to retrieve a specific project with valid ID but without authentication

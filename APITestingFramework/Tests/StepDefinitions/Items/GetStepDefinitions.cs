@@ -15,8 +15,7 @@ namespace Features.Item.Get
         private readonly ScenarioContext _scenarioContext;
         private readonly string url = "projects/4055066/items.json";
 
-        public GetItemsStepDefinitions(ScenarioContext scenarioContext)
-            : base(scenarioContext)
+        public GetItemsStepDefinitions(ScenarioContext scenarioContext) : base(scenarioContext)
         {
             _scenarioContext = scenarioContext;
         }
@@ -26,7 +25,6 @@ namespace Features.Item.Get
         )]
         public void WhentheusermakesaGETrequesttotheAPIendpointtoretrievetheitemsofavalidprojectID()
         {
-            System.Console.WriteLine("aqui1");
             var username = _scenarioContext["username"].ToString();
             var password = _scenarioContext["password"].ToString();
             Client.AddDefaultHeader("Accept", "*/*");
@@ -40,10 +38,7 @@ namespace Features.Item.Get
             string statusCode
         )
         {
-            System.Console.WriteLine("aqui");
-            System.Console.WriteLine(statusCode);
             RestResponse response = (RestResponse)_scenarioContext["Response"];
-            System.Console.WriteLine(response.Content!);
             Assert.Equal(statusCode, response.StatusCode.ToString());
         }
 

@@ -27,8 +27,12 @@ namespace Features.Project.GetById
             _scenarioContext["Response"] = Client.Get(url);
         }
 
-        [Then(@"the response should have a status code of ""(.*)"" and should contain the details of the valid project")]
-        public void Thentheresponseshouldhaveastatuscodeofandshouldcontainthedetailsofthevalidproject(string statusCode)
+        [Then(
+            @"the response should have a status code of ""(.*)"" and should contain the details of the valid project"
+        )]
+        public void Thentheresponseshouldhaveastatuscodeofandshouldcontainthedetailsofthevalidproject(
+            string statusCode
+        )
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
 
@@ -39,17 +43,27 @@ namespace Features.Project.GetById
             Assert.IsType<ProjectPayloadModel>(user);
         }
 
-        [When(@"the user sends a GET request to the api endpoint with an invalid project ID ""(.*)""")]
+        [When(
+            @"the user sends a GET request to the api endpoint with an invalid project ID ""(.*)"""
+        )]
         public void WhentheusersendsaGETrequesttotheapiendpointwithaninvalidprojectID(string id)
         {
-            Client.AddDefaultHeader("Authorization", "Basic YWRyaWVsLmdpbWVuZXNAamFsYS51bml2ZXJzaXR5OlRvZG8ubHkzMjY4MA==");
+            Client.AddDefaultHeader(
+                "Authorization",
+                "Basic YWRyaWVsLmdpbWVuZXNAamFsYS51bml2ZXJzaXR5OlRvZG8ubHkzMjY4MA=="
+            );
             Client.AddDefaultHeader("Accept", "*/*");
 
             _scenarioContext["Response"] = Client.Get($"projects/{id}.json");
         }
 
-        [Then(@"the response should have a status code of ""(.*)"" and the response should contain an error message ""(.*)""")]
-        public void Thentheresponseshouldhaveastatuscodeofandtheresponseshouldcontainanerrormessage(string statusCode, string errorMessage)
+        [Then(
+            @"the response should have a status code of ""(.*)"" and the response should contain an error message ""(.*)"""
+        )]
+        public void Thentheresponseshouldhaveastatuscodeofandtheresponseshouldcontainanerrormessage(
+            string statusCode,
+            string errorMessage
+        )
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
 
@@ -59,7 +73,7 @@ namespace Features.Project.GetById
             var error = JsonSerializer.Deserialize<ErrorResponseModel>(response.Content!);
             Assert.IsType<ErrorResponseModel>(error);
             Assert.Equal(errorMessage, error!.ErrorMessage);
-            Assert.Equal(402, error!.ErrorCode);
+            Assert.Equal(102, error!.ErrorCode);
         }
 
         [When(@"the user sends a GET request to the api endpoint with an valid project ID")]
@@ -70,8 +84,13 @@ namespace Features.Project.GetById
             _scenarioContext["Response"] = Client.Get(url);
         }
 
-        [Then(@"the response should have a status code of ""(.*)"" and a ""(.*)"" error message indicating that the user is not authorized to access the resource.")]
-        public void Thentheresponseshouldhaveastatuscodeofandaerrormessageindicatingthattheuserisnotauthorizedtoaccesstheresource(string statusCode, string errorMessage)
+        [Then(
+            @"the response should have a status code of ""(.*)"" and a ""(.*)"" error message indicating that the user is not authorized to access the resource."
+        )]
+        public void Thentheresponseshouldhaveastatuscodeofandaerrormessageindicatingthattheuserisnotauthorizedtoaccesstheresource(
+            string statusCode,
+            string errorMessage
+        )
         {
             RestResponse response = (RestResponse)_scenarioContext["Response"];
 

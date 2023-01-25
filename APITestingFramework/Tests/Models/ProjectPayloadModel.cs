@@ -5,44 +5,44 @@ using System.Collections.Generic;
 
 public record ProjectPayloadModel
 {
-    public int? Id { get; set; } = null;
+    public int? Id { get; set; }
     public string? Content { get; set; }
-    public int? ItemsCount { get; set; } = null;
-    public int? Icon { get; set; } = null;
-    public int? ItemType { get; set; } = null;
-    public int? ParentId { get; set; } = null;
-    public bool? Collapsed { get; set; } = null;
-    public int? ItemOrder { get; set; } = null;
-    public List<ProjectPayloadModel>? Children { get; set; } = null;
-    public bool? IsProjectShared { get; set; } = null;
-    public string? ProjectShareOwnerName { get; set; } = null;
-    public string? ProjectShareOwnerEmail { get; set; } = null;
-    public bool? IsShareApproved { get; set; } = null;
-    public bool? IsOwnProject { get; set; } = null;
-    public DateTime? LastSyncedDateTime { get; set; } = null;
-    public DateTime? LastUpdatedDate { get; set; } = null;
-    public bool? Deleted { get; set; } = null;
-    public int? SyncClientCreationId { get; set; } = null;
+    public int? ItemsCount { get; set; }
+    public int? Icon { get; set; }
+    public int? ItemType { get; set; }
+    public int? ParentId { get; set; }
+    public bool? Collapsed { get; set; }
+    public int? ItemOrder { get; set; }
+    public List<ProjectPayloadModel>? Children { get; set; }
+    public bool? IsProjectShared { get; set; }
+    public string? ProjectShareOwnerName { get; set; }
+    public string? ProjectShareOwnerEmail { get; set; }
+    public bool? IsShareApproved { get; set; }
+    public bool? IsOwnProject { get; set; }
+    public string? LastSyncedDateTime { get; set; }
+    public string? LastUpdatedDate { get; set; }
+    public bool? Deleted { get; set; }
+    public int? SyncClientCreationId { get; set; }
 
     public ProjectPayloadModel(
         int? id,
         string? content,
-        int? itemsCount,
-        int? icon,
-        int? itemType,
-        int? parentId,
-        bool? collapsed,
-        int? itemOrder,
-        List<ProjectPayloadModel>? children,
-        bool? isProjectShared,
-        string? projectShareOwnerName,
-        string? projectShareOwnerEmail,
-        bool? isShareApproved,
-        bool? isOwnProject,
-        DateTime? lastSyncedDateTime,
-        DateTime? lastUpdatedDate,
-        bool? deleted,
-        int? syncClientCreationId
+        int? itemsCount = 0,
+        int? icon = 0,
+        int? itemType = 2,
+        int? parentId = null,
+        bool? collapsed = false,
+        int? itemOrder = null,
+        List<ProjectPayloadModel>? children = null,
+        bool? isProjectShared = false,
+        string? projectShareOwnerName = null,
+        string? projectShareOwnerEmail = null,
+        bool? isShareApproved = false,
+        bool? isOwnProject = true,
+        string? lastSyncedDateTime = null,
+        string? lastUpdatedDate = null,
+        bool? deleted = false,
+        int? syncClientCreationId = null
     )
     {
         Content = content;
@@ -53,7 +53,6 @@ public record ProjectPayloadModel
         ParentId = parentId;
         Collapsed = collapsed;
         ItemOrder = itemOrder;
-        Children = children;
         IsProjectShared = isProjectShared;
         ProjectShareOwnerName = projectShareOwnerName;
         ProjectShareOwnerEmail = projectShareOwnerEmail;
@@ -63,5 +62,14 @@ public record ProjectPayloadModel
         LastUpdatedDate = lastUpdatedDate;
         Deleted = deleted;
         SyncClientCreationId = syncClientCreationId;
+
+        if (children == null)
+        {
+            Children = new List<ProjectPayloadModel>();
+        }
+        else
+        {
+            Children = children;
+        }
     }
 }
